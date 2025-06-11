@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 
-from DataUtils.OpenFaceInstance import OpenFaceInstance
+from _utils_.OpenFaceInstance import OpenFaceInstance
 
 
 # Class

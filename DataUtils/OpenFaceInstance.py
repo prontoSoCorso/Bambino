@@ -5,6 +5,9 @@ import pandas as pd
 
 # Class
 class OpenFaceInstance:
+    """
+    Wraps a single participant-trial’s worth of OpenFace output (gaze, head, face).
+    """
 
     # Define class attributes
     dim_dict = {"g": 8, "h": 13, "f": 17}
@@ -19,105 +22,51 @@ class OpenFaceInstance:
                         "Jaw Drop", "Blink"]}
     subplot_settings = {"g": [15, 10, 2, 4], "h": [15, 10, 3, 5], "f": [15, 10, 4, 5]}
 
-    def __init__(self, trial_data, is_boa, is_toy):
-        trial_data = trial_data.to_numpy()
-        if not is_boa:
-            pt_ind = 0
-            trial_ind = 7
-            age_ind = 3
-            sex_ind = 4
-            trial_type_ind = 8
-            if not is_toy:
-                gaze_ind = range(20, 28)
-                head_ind = range(28, 41)
-                face_ind = range(41, 58)
-                self.clinician_pred = trial_data[0, 16]
-            else:
-                gaze_ind = range(21, 29)
-                head_ind = range(29, 42)
-                face_ind = range(42, 59)
-                self.clinician_pred = trial_data[0, 17]
+    def __init__(self, trial_data: pd.DataFrame):
+        arr = trial_data.to_numpy()
+        # column indices (you may want to double-check these against your CSV!)
+        pt_ind, sex_ind, age_ind, trial_ind, trl_type_ind = 0, 1, 3, 4, 5
+        # audio & speaker
+        raw_audio = arr[0, 6]
+        self.audio = raw_audio[:-4].replace("_", " ")
+        raw_spk = arr[0, 7].lower()
+        self.speaker = 0 if raw_spk == "left" else (1 if raw_spk == "right" else None)
+        # fixed fields
+        self.pt_id      = arr[0, pt_ind]
+        self.sex        = int(arr[0, sex_ind])
+        self.age        = float(arr[0, age_ind])
+        self.trial_id   = float(arr[0, trial_ind])
+        self.trial_type = int(arr[0, trl_type_ind])
+        # time‐series fields (with linear interp. of any NaNs)
+        gaze_cols = range(17, 25)
+        head_cols = range(25, 38)
+        face_cols = range(38, 55)
 
-        else:
-            pt_ind = 0
-            trial_ind = 4
-            age_ind = 3
-            sex_ind = 1
-            trial_type_ind = 5
-            gaze_ind = range(17, 25)
-            head_ind = range(25, 38)
-            face_ind = range(38, 55)
+        # Interpolation
+        self.gaze_info = np.stack([pd.Series(arr[:, i].astype(np.float32)).interpolate() for i in gaze_cols], axis=1)
+        self.head_info = np.stack([pd.Series(arr[:, i].astype(np.float32)).interpolate() for i in head_cols], axis=1)
+        self.face_info = np.stack([pd.Series(arr[:, i].astype(np.float32)).interpolate() for i in face_cols], axis=1)
 
-            self.audio = trial_data[0, 6][:-4].replace("_", " ")
-            self.speaker = trial_data[0, 7]
-            if self.speaker == "left":
-                self.speaker = 0
-            elif self.speaker == "right":
-                self.speaker = 1
-            else:
-                self.speaker = None
+        # after interpolation, back- and forward-fill any edge NaNs then zero any that survive
+        self.gaze_info = pd.DataFrame(self.gaze_info).fillna(method='bfill').fillna(method='ffill').to_numpy()
+        self.head_info = pd.DataFrame(self.head_info).fillna(method='bfill').fillna(method='ffill').to_numpy()
+        self.face_info = pd.DataFrame(self.face_info).fillna(method='bfill').fillna(method='ffill').to_numpy()
 
-        # Read fixed attributes
-        self.pt_id = trial_data[0, pt_ind]
-        self.trial_id = trial_data[0, trial_ind]
-        self.age = trial_data[0, age_ind]
-        self.sex = trial_data[0, sex_ind]
-        self.trial_type = trial_data[0, trial_type_ind]
-
-        conf_ind = 19 if not is_boa else 15
-        if is_toy:
-            # Remove unsuccessful acquisitions and interpolate signals
-            low_conf_inds = trial_data[:, conf_ind] <= 0.5
-            trial_data[low_conf_inds, gaze_ind[0]:] = np.nan
-
-        # Read time varying attributes
-        self.gaze_info = np.stack([pd.Series(trial_data[:, i].astype(np.float32)).interpolate(method="linear")
-                                   for i in gaze_ind], 1)
-        self.head_info = np.stack([pd.Series(trial_data[:, i].astype(np.float32)).interpolate(method="linear")
-                                   for i in head_ind], 1)
-        self.face_info = np.stack([pd.Series(trial_data[:, i].astype(np.float32)).interpolate(method="linear")
-                                   for i in face_ind], 1)
-
-        # Cut windows from stimulus presentation to reward display
-        if is_toy and not is_boa:
-            timestamp = trial_data[:, 10]
-            max_time = trial_data[0, 15]
-            max_time = max_time if not np.isnan(max_time) else np.inf
-            windows_inds = (timestamp >= 0) & (timestamp < max_time)
-            self.gaze_info = self.gaze_info[windows_inds, :]
-            self.head_info = self.head_info[windows_inds, :]
-            self.face_info = self.face_info[windows_inds, :]
+        # finally, guard against any remaining NaN/infs
+        self.gaze_info = np.nan_to_num(self.gaze_info, nan=0.0, posinf=0.0, neginf=0.0)
+        self.head_info = np.nan_to_num(self.head_info, nan=0.0, posinf=0.0, neginf=0.0)
+        self.face_info = np.nan_to_num(self.face_info, nan=0.0, posinf=0.0, neginf=0.0)
 
     @staticmethod
-    def categorize_age(age, is_boa):
-        age_categorical = None
-        if not is_boa:
-            age = np.round(age)
-            if 7 <= age <= 11:
-                age_categorical = 0
-            elif 12 <= age <= 18:
-                age_categorical = 1
-            elif 19 <= age <= 24:
-                age_categorical = 2
-        else:
-            if 3 <= age < 5.5:
-                age_categorical = 0
-            elif 5.5 <= age < 7.5:
-                age_categorical = 1
-
-        return age_categorical
+    def categorize_age(age: float) -> int:
+        if  3.0 <= age <  5.5: return 0
+        if  5.5 <= age <  7.5: return 1
+        return None
 
     @staticmethod
-    def categorize_trial_id(trial_id, train_id_stats):
-        m_trial, s_trial = train_id_stats
-        boundary1 = m_trial - 0.5 * s_trial
-        boundary2 = m_trial + 0.5 * s_trial
-
-        if trial_id < boundary1:
-            trial_categorical = 0
-        elif boundary1 <= trial_id < boundary2:
-            trial_categorical = 1
-        else:
-            # trial_id >= boundary2
-            trial_categorical = 2
-        return trial_categorical
+    def categorize_trial_id(trial_id: float, stats: tuple) -> int:
+        mu, sigma = stats
+        b1, b2 = mu - 0.5*sigma, mu + 0.5*sigma
+        if trial_id <  b1: return 0
+        if b1 <= trial_id < b2: return 1
+        return 2

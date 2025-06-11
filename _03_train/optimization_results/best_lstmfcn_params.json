@@ -1,0 +1,20 @@
+{
+  "lstmfcn_batch_size": 32,
+  "lstmfcn_learning_rate": 3.153813670270079e-05,
+  "lstmfcn_max_lr": 0.004018827640830387,
+  "lstmfcn_pct_start": 0.4586320455614753,
+  "enc_hidden_dim": 64,
+  "dropout_enc": 0.14202984050334566,
+  "n_heads": 4,
+  "dropout_attn": 0.09352340279834269,
+  "lstm_hidden_dim": 256,
+  "lstm_layers": 3,
+  "bidirectional": true,
+  "dropout_lstm": 0.3009693146221496,
+  "cnn_filter_sizes": "256,512,256",
+  "cnn_kernel_sizes": "3,5,7",
+  "dropout_cnn": 0.1149117714316849,
+  "se_ratio": 0.36769272094772343,
+  "dropout_classifier": 0.3879342569820179,
+  "lstmfcn_use_focal": true
+}

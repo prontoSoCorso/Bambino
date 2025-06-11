@@ -1,7 +1,7 @@
 # Import packages
 import torch.nn as nn
 
-from DataUtils.OpenFaceInstance import OpenFaceInstance
+from _utils_.OpenFaceInstance import OpenFaceInstance
 from Networks.StimulusConv1d import StimulusConv1d
 
 

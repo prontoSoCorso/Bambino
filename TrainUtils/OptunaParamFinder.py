@@ -16,9 +16,9 @@ from TrainUtils.ToyNetworkTrainer import ToyNetworkTrainer
 from TrainUtils.BoaNetworkTrainer import BoaNetworkTrainer
 from Types.TaskType import TaskType
 from Types.NetType import NetType
-from DataUtils.OpenFaceDataset import OpenFaceDataset
-from DataUtils.ToyOpenFaceDataset import ToyOpenFaceDataset
-from DataUtils.BoaOpenFaceDataset import BoaOpenFaceDataset
+from _utils_.OpenFaceDataset import OpenFaceDataset
+from _utils_.ToyOpenFaceDataset import ToyOpenFaceDataset
+from _utils_.BoaOpenFaceDataset import BoaOpenFaceDataset
 
 
 # Class

@@ -4,11 +4,11 @@ import numpy as np
 import cv2
 
 from TrainUtils.NetworkTrainer import NetworkTrainer
-from DataUtils.ToyOpenFaceDataset import ToyOpenFaceDataset
-from DataUtils.OpenFaceInstance import OpenFaceInstance
+from _utils_.ToyOpenFaceDataset import ToyOpenFaceDataset
+from _utils_.OpenFaceInstance import OpenFaceInstance
 from Types.TaskType import TaskType
 from Types.NetType import NetType
-from DataUtils.OpenFaceDataset import OpenFaceDataset
+from _utils_.OpenFaceDataset import OpenFaceDataset
 
 
 # Class

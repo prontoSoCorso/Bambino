@@ -15,10 +15,10 @@ from pandas import DataFrame
 from calfram.calibrationframework import select_probability, reliabilityplot, calibrationdiagnosis, classwise_calibration
 from collections import Counter
 
-from DataUtils.OpenFaceDataset import OpenFaceDataset
-from DataUtils.ToyOpenFaceDataset import ToyOpenFaceDataset
-from DataUtils.BoaOpenFaceDataset import BoaOpenFaceDataset
-from DataUtils.OpenFaceInstance import OpenFaceInstance
+from _utils_.OpenFaceDataset import OpenFaceDataset
+from _utils_.ToyOpenFaceDataset import ToyOpenFaceDataset
+from _utils_.BoaOpenFaceDataset import BoaOpenFaceDataset
+from _utils_.OpenFaceInstance import OpenFaceInstance
 from Types.TaskType import TaskType
 from Types.SetType import SetType
 from TrainUtils.StatsHolder import StatsHolder

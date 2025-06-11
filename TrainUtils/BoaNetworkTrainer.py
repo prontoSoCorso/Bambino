@@ -3,10 +3,10 @@ import torch
 
 from TrainUtils.NetworkTrainer import NetworkTrainer
 from TrainUtils.ToyNetworkTrainer import ToyNetworkTrainer
-from DataUtils.BoaOpenFaceDataset import BoaOpenFaceDataset
+from _utils_.BoaOpenFaceDataset import BoaOpenFaceDataset
 from Types.TaskType import TaskType
 from Types.NetType import NetType
-from DataUtils.OpenFaceDataset import OpenFaceDataset
+from _utils_.OpenFaceDataset import OpenFaceDataset
 
 
 # Class

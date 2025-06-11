@@ -67,10 +67,9 @@ sympy==1.12
 tbb==2021.12.0
 tenacity==8.3.0
 threadpoolctl==3.5.0
-torch==2.0.1+cu117
-torchaudio==2.0.2+cu117
-torcheval==0.0.7
-torchvision==0.15.2+cu117
+torch==2.7.0+cu128
+torchaudio==2.7.0+cu128
+torchvision==0.22.0+cu128
 tqdm==4.66.4
 traitlets==5.14.3
 typing_extensions==4.11.0

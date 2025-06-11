@@ -1,379 +1,239 @@
 # Import packages
 import os
-
+import sys
 import pandas as pd
 import numpy as np
-import random
 import pickle
 import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import Dataset
-from collections import Counter
 
+# Configurazione dei percorsi
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+while not os.path.basename(parent_dir) == "Bambino":
+    parent_dir = os.path.dirname(parent_dir)
+sys.path.append(parent_dir)
+
+from config import utils
 from DataUtils.OpenFaceInstance import OpenFaceInstance
-
 
 # Class
 class OpenFaceDataset(Dataset):
     # Define class attributes
-    trial_types = ["control", "stimulus"]
-    age_groups = ["7-11", "12-18", "19-24"]
-    trial_id_groups = ["0-30th percentiles", "30-70th percentiles", "70-100th percentiles"]
+    TRIAL_TYPES = ["control", "stimulus"]
+    AGE_GROUPS = ["7-11", "12-18", "19-24"]
+    TRIAL_ID_GROUPS = ["0-30th percentiles", "30-70th percentiles", "70-100th percentiles"]
+    FRAME_RATE = 25
+    MIN_SEQUENCE_LENGTH = 300
 
-    time_stimulus = 2
-    max_time = 12
-    fc = 25
-
-    # Define folders
-    data_fold = "data/preliminary_toy/"
-    preliminary_fold = "preliminary_analysis/"
-    results_fold = "results/preliminary_toy/"
-    models_fold = "models/"
-    jai_fold = "JAI/"
-
-    def __init__(self, dataset_name, working_dir, file_name, data_instances=None, is_boa=False, is_toy=False):
-        self.working_dir = working_dir
-        self.data_dir = working_dir + self.data_fold
-        self.results_dir = working_dir + self.results_fold
-        self.file_name = file_name
+    def __init__(self, 
+                 dataset_name: str, 
+                 working_dir: str, 
+                 file_name: str, 
+                 data_instances: list=None,
+                 modalities: list = None):
+        """
+        Args:
+            dataset_name: name to tag stored .pt and plots
+            working_dir: directory where CSV lives and where .pt will be saved
+            file_name: name of CSV file to read (with extension)
+            data_instances: optional list of pre-built OpenFaceInstance
+        """
+        super().__init__()
+        # seed / reproducibility
+        utils.seed_everything(utils.seed)
+        
+        # paths
         self.dataset_name = dataset_name
-        self.is_boa = is_boa
-        self.is_toy = is_toy
-        self.preliminary_dir = self.results_dir + self.preliminary_fold
-        if self.dataset_name not in os.listdir(self.preliminary_dir):
-            os.mkdir(self.preliminary_dir + self.dataset_name)
-        self.preliminary_dir += self.dataset_name + "/"
+        self.working_dir = working_dir
+        self.data_path = os.path.join(working_dir, file_name)
+        self.output_dir = os.path.join(working_dir, "results", dataset_name)
+        os.makedirs(self.output_dir, exist_ok=True)
 
-        # Read file
-        data = pd.read_csv(self.data_dir + file_name, delimiter=",")
+        # load raw CSV
+        # store selected modalities (defaults to all)
+        self.modalities = modalities if modalities is not None else ["g", "h", "f"]
+        df = pd.read_csv(self.data_path)
+        # normalize labels
+        df["sex"] = df["sex"].map({"Boy": 1, "Girl": 0})
+        df["trial_type"] = df["trial_type"].map({
+            OpenFaceDataset.TRIAL_TYPES[0]: 0,
+            OpenFaceDataset.TRIAL_TYPES[1]: 1
+        })
 
-        # Adjust values
-        data.loc[data["sex"] == "Boy", "sex"] = 1
-        data.loc[data["sex"] == "Girl", "sex"] = 0
-        data.loc[data["trial_type"] == self.trial_types[1], "trial_type"] = 1
-        data.loc[data["trial_type"] == self.trial_types[0], "trial_type"] = 0
-        if not is_boa:
-            data.loc[(data["trial_outcome"] == "true_positive") |
-                     (data["trial_outcome"] == "false_positive"), "trial_outcome"] = 1
-            data.loc[(data["trial_outcome"] == "true_negative") |
-                     (data["trial_outcome"] == "false_negative"), "trial_outcome"] = 0
-
-        # Read separate trials
+        # build instances
         if data_instances is None:
-            self.ids = np.unique(data["participant_id"])
-            self.trials = np.unique(data["trial_id"])
             self.instances = []
-            for pt_id in self.ids:
-                for trial in self.trials:
-                    temp_data = data.loc[(data["participant_id"] == pt_id) & (data["trial_id"] == trial), :]
-                    if (temp_data.shape[0] == 0 or temp_data["low_confidence_for_trial"].iloc[0] or
-                            (temp_data["confidence"].iloc[0:52] <= 0.5).all()):
+            self.ids = df["participant_id"].unique()
+            self.trials = df["trial_id"].unique()
+            for pid in self.ids:
+                for tid in self.trials:
+                    sub = df[(df["participant_id"] == pid) & (df["trial_id"] == tid)]
+                    if (sub.empty 
+                        or sub["low_confidence_for_trial"].iat[0] 
+                        or (sub["confidence"].iloc[:52] <= 0.5).all()):
                         continue
-                    self.instances.append(OpenFaceInstance(temp_data, is_boa, is_toy))
+                    self.instances.append(OpenFaceInstance(sub))
         else:
-            self.ids = np.unique([instance.pt_id for instance in data_instances])
             self.instances = data_instances
-        self.len = len(self.instances)
+            self.ids = np.unique([inst.pt_id for inst in data_instances])
 
-        self.task_type = None
-        self.clinician_cm = None
-        self.clinician_stats = None
-        self.trial_id_stats = None
-
-    def __getitem__(self, idx):
-        instance = self.instances[idx]
-
-        x = {"g": torch.Tensor(instance.gaze_info),
-             "h": torch.Tensor(instance.head_info),
-             "f": torch.Tensor(instance.face_info)}
-        y = OpenFaceDataset.preprocess_label(instance.trial_type)
-
-        age = OpenFaceInstance.categorize_age(instance.age, self.is_boa)
-        age = OpenFaceDataset.preprocess_label(age)
-        trial_id_categorical = OpenFaceInstance.categorize_trial_id(instance.trial_id, self.trial_id_stats)
-        trial_id_categorical = OpenFaceDataset.preprocess_label(trial_id_categorical)
-        trial_id = OpenFaceDataset.preprocess_label(instance.trial_id)
-        return x, y, [age, trial_id_categorical, trial_id]
+        self.trial_id_stats = None  # to be computed in compute_statistics()
 
     def __len__(self):
-        return self.len
+        return len(self.instances)
 
-    def get_extra_info(self, x):
-        ages = []
-        trial_ids = []
-        for i in range(x["g"].shape[0]):
-            gi = x["g"][i, :, :]
-            hi = x["h"][i, :, :]
-            fi = x["f"][i, :, :]
-            for instance in self.instances:
-                if instance.gaze_info == gi and instance.head_info == hi and instance.face_info == fi:
-                    ages.append(OpenFaceInstance.categorize_age(instance.age, self.is_boa))
-                    trial_ids.append(OpenFaceInstance.categorize_trial_id(instance.trial_id, self.trial_id_stats))
+    def __getitem__(self, idx):
+        inst = self.instances[idx]
+        # build full feature dict, then filter by selected modalities
+        full_x = {
+            "g": torch.tensor(inst.gaze_info, dtype=torch.float),
+            "h": torch.tensor(inst.head_info, dtype=torch.float),
+            "f": torch.tensor(inst.face_info, dtype=torch.float),
+        }
+        x = {k: full_x[k] for k in self.modalities}
+        y = OpenFaceDataset._to_label_tensor(inst.trial_type)
 
-        return torch.Tensor(ages), torch.Tensor(trial_ids)
+        # extra metadata
+        age_cat    = OpenFaceInstance.categorize_age(inst.age)
+        trial_cat  = OpenFaceInstance.categorize_trial_id(inst.trial_id, self.trial_id_stats)
 
-    def split_dataset(self, train_perc, is_child_dataset=False):
-        # Get training set instances
-        n_pt = len(self.ids)
-        n_train = int(np.round(n_pt * train_perc))
-        id_train = random.sample(list(self.ids), n_train)
-        train_instances = self.get_instances(id_train)
-
-        # Get validation set instances
-        n_val = int(np.floor((n_pt - n_train) / 2))
-        remaining = list(set(self.ids) - set(id_train))
-        id_val = random.sample(remaining, n_val)
-        val_instances = self.get_instances(id_val)
-
-        # Get test set instances
-        id_test = list(set(remaining) - set(id_val))
-        test_instances = self.get_instances(id_test)
-
-        if not is_child_dataset:
-            # Create and store datasets
-            train_set = OpenFaceDataset(dataset_name="training_set", working_dir=self.working_dir,
-                                        file_name=self.file_name,
-                                        data_instances=train_instances)
-            train_set.store_dataset()
-            val_set = OpenFaceDataset(dataset_name="validation_set", working_dir=self.working_dir,
-                                      file_name=self.file_name,
-                                      data_instances=val_instances)
-            val_set.store_dataset()
-            test_set = OpenFaceDataset(dataset_name="test_set", working_dir=self.working_dir, file_name=self.file_name,
-                                       data_instances=test_instances)
-            test_set.store_dataset()
-        else:
-            return train_instances, val_instances, test_instances
-
-    def get_instances(self, ids):
-        return [instance for instance in self.instances if instance.pt_id in ids]
-
-    def compute_statistics(self, trial_id_stats=None, return_output=False):
-        # Count data
-        print("Number of patients:", len(self.ids))
-        print("Number of data instances:", self.len)
-
-        # Count trial types
-        n_stimulus = len([instance for instance in self.instances if instance.trial_type == 1])
-        n_control = self.len - n_stimulus
-        OpenFaceDataset.draw_pie_bar_plot([n_control, n_stimulus], self.trial_types, "Trial types",
-                                          self.preliminary_dir + "trial_types_pie")
-        OpenFaceDataset.draw_pie_bar_plot([n_control, n_stimulus], self.trial_types, "Trial types",
-                                          self.preliminary_dir + "trial_types_bar", do_bar=True)
-
-        # Count age (at patient level)
-        ages = []
-        ages_categorical = []
-        for pt_id in self.ids:
-            for instance in self.instances:
-                if instance.pt_id == pt_id:
-                    age = instance.age
-                    ages.append(age)
-                    ages_categorical.append(OpenFaceInstance.categorize_age(age, self.is_boa))
-                    break
-        maximum = 24 if not self.is_boa else 7
-        OpenFaceDataset.draw_hist(ages, maximum, "Age distribution (in months)", self.preliminary_dir +
-                                  "age_distr")
-        maximum = 3 if not self.is_boa else 2
-        OpenFaceDataset.draw_hist(ages_categorical, maximum, "Age distribution (categorical)",
-                                  self.preliminary_dir + "age_categ_distr", self.age_groups)
-
-        # Count number of trials
-        trials = [instance.trial_id for instance in self.instances]
-        maximum = 90 if not self.is_boa else 20
-        OpenFaceDataset.draw_hist(trials, maximum, "Trial distribution", self.preliminary_dir + "trial_distr")
-
-        # Count categorized number of trials
-        if trial_id_stats is None:
-            # Compute trial_id mean and std
-            m_trial = np.mean(trials)
-            s_trial = np.std(trials)
-            trial_id_stats = (m_trial, s_trial)
-            self.trial_id_stats = trial_id_stats
-        trials_categorical = [OpenFaceInstance.categorize_trial_id(trial, trial_id_stats) for trial in trials]
-        OpenFaceDataset.draw_hist(trials_categorical, 3, "Trial distribution (categorical)",
-                                  self.preliminary_dir + "trial_categ_distr", self.trial_id_groups)
-
-        # Count instances by both age and number of trials
-        ages_categorical_all = [OpenFaceInstance.categorize_age(instance.age, self.is_boa)
-                                for instance in self.instances]
-        OpenFaceDataset.interaction_count(ages_categorical_all, trials_categorical, self.age_groups,
-                                          self.trial_id_groups, "Age (categorical)", "Trial ID (categorical)",
-                                          self.preliminary_dir + "age_vs_trial.png")
-
-        # Count sequence duration
-        durations = [instance.face_info.shape[0] / OpenFaceDataset.fc for instance in self.instances]
-        print("Mean sequence duration = ", str(np.mean(durations)) + "s", "(std = " + str(np.std(durations)) + ")")
-        for instance in self.instances:
-            length = instance.face_info.shape[0]
-            if (not self.is_toy or self.is_boa) and length < 300:
-                print("Patient", instance.pt_id, "(trial " + str(instance.trial_id) + ") has", length, "data points")
-
-        if return_output:
-            return ages_categorical, ages_categorical_all, trials_categorical
-
-    def remove_short_sequences(self):
-        removable = []
-        for instance in self.instances:
-            if instance.face_info.shape[0] < 300:
-                removable.append(instance)
-
-        for rm in removable:
-            self.instances.remove(rm)
-        self.len = len(self.instances)
-
-    def store_dataset(self):
-        file_path = self.data_dir + self.dataset_name + ".pt"
-        with open(file_path, "wb") as file:
-            pickle.dump(self, file)
-        print("The dataset '" + self.dataset_name + "' have been stored!")
-
-    def get_item(self, pt_id, trial_id):
-        idx = None
-        for i in range(len(self.instances)):
-            instance = self.instances[i]
-            if instance.pt_id == pt_id and instance.trial_id == trial_id:
-                idx = i
-        if idx is None:
-            print("Trial " + trial_id + " of patient " + pt_id + " not found!")
-            return None
-        else:
-            x, y, _ = self.__getitem__(idx)
-            return x, y
+        extras = [
+            OpenFaceDataset._to_label_tensor(age_cat),
+            OpenFaceDataset._to_label_tensor(trial_cat),
+            OpenFaceDataset._to_label_tensor(inst.trial_id),
+        ]
+        return x, y, extras
 
     @staticmethod
-    def interaction_count(var_list1, var_list2, var_labels1, var_labels2, var_name1, var_name2, output_path):
-        pairs = list(zip(var_list1, var_list2))
-        pair_counts = Counter(pairs)
-        l1 = len(var_labels1)
-        l2 = len(var_labels2)
-        cm = np.zeros((l1, l2), dtype=int)
-        for k, v in pair_counts.items():
-            cm[k[0], k[1]] = int(v)
-        plt.figure(figsize=(8, 4))
-        plt.imshow(cm, cmap="Reds")
-        for i in range(cm.shape[0]):
-            for j in range(cm.shape[1]):
-                val = cm[i, j]
-                plt.text(j, i, f"{val.item()}", ha="center", va="center", color="black", fontsize="xx-large")
-        font_size = 10 if l2 < 10 else 8
-        plt.xticks(list(range(l2)), var_labels2, rotation=10, fontsize=font_size)
-        plt.xlabel(var_name2)
-        plt.yticks(list(range(l1)), var_labels1)
-        plt.ylabel(var_name1)
-        plt.savefig(output_path, dpi=300, bbox_inches="tight")
+    def _to_label_tensor(val: int) -> torch.LongTensor:
+        return torch.tensor([val], dtype=torch.long)
+    
+    @staticmethod
+    def load_dataset(path: str, modalities: list = None):
+        """
+        Unpickle a saved dataset and back-fill any missing attributes
+        (e.g. output_dir) introduced since it was pickled.
+        """
+        with open(path, "rb") as f:
+            ds = pickle.load(f)
+
+        # Back-fill output_dir if missing
+        if not hasattr(ds, "output_dir"):
+            ds.output_dir = os.path.join(ds.working_dir, "results", ds.dataset_name)
+            os.makedirs(ds.output_dir, exist_ok=True)
+
+        # Back-fill trial_id_stats if missing
+        if not hasattr(ds, "trial_id_stats"):
+            ds.trial_id_stats = None
+
+        if modalities is not None:
+            ds.modalities = modalities
+
+        return ds
+    
+    def compute_statistics(self, recalc_stats: bool = False):
+        """
+        Produce and save:
+          - trial type pie/bar plot
+          - age histogram (raw + categorical)
+          - trial count histogram (raw + categorical)
+          - age vs. trial_id heatmap
+          - sequence duration summary + list of < MIN_SEQUENCE_LENGTH
+        """
+        # set trial_id_stats if needed
+        if self.trial_id_stats is None or recalc_stats:
+            trials = [inst.trial_id for inst in self.instances]
+            self.trial_id_stats = (np.mean(trials), np.std(trials))
+
+        # 1) trial types
+        n_stim   = sum(inst.trial_type == 1 for inst in self.instances)
+        n_control = len(self.instances) - n_stim
+        self._draw_pie_bar([n_control, n_stim],
+                           labels=OpenFaceDataset.TRIAL_TYPES,
+                           title="Trial Types",
+                           out=os.path.join(self.output_dir, "trial_types"))
+
+        # 2) ages
+        ages = []
+        ages_cat = []
+        for pid in self.ids:
+            inst = next(filter(lambda i: i.pt_id == pid, self.instances))
+            ages.append(inst.age)
+            ages_cat.append(OpenFaceInstance.categorize_age(inst.age))
+        self._draw_hist(ages, max_value=OpenFaceDataset.AGE_GROUPS[-1], 
+                        title="Age (months)", 
+                        out=os.path.join(self.output_dir, "age_months"))
+        self._draw_hist(ages_cat, max_value=len(OpenFaceDataset.AGE_GROUPS),
+                        labels=OpenFaceDataset.AGE_GROUPS,
+                        title="Age Categories",
+                        out=os.path.join(self.output_dir, "age_categorical"))
+
+        # 3) trial distribution
+        trials = [inst.trial_id for inst in self.instances]
+        self._draw_hist(trials, max_value=int(max(trials)),
+                        title="Trial ID (raw)",
+                        out=os.path.join(self.output_dir, "trial_raw"))
+        trials_cat = [OpenFaceInstance.categorize_trial_id(t, self.trial_id_stats) for t in trials]
+        self._draw_hist(trials_cat, max_value=len(OpenFaceDataset.TRIAL_ID_GROUPS),
+                        labels=OpenFaceDataset.TRIAL_ID_GROUPS,
+                        title="Trial ID (categorical)",
+                        out=os.path.join(self.output_dir, "trial_categorical"))
+
+        # 4) age vs. trial heatmap
+        self._interaction_plot(ages_cat, trials_cat,
+                               row_labels=OpenFaceDataset.AGE_GROUPS,
+                               col_labels=OpenFaceDataset.TRIAL_ID_GROUPS,
+                               title="Age vs Trial",
+                               out=os.path.join(self.output_dir, "age_vs_trial"))
+
+        # 5) durations
+        durations = [inst.face_info.shape[0] / OpenFaceDataset.FRAME_RATE for inst in self.instances]
+        print(f"Mean duration: {np.mean(durations):.2f}s (std {np.std(durations):.2f}s)")
+        short = [(inst.pt_id, inst.trial_id, inst.face_info.shape[0]) 
+                 for inst in self.instances if inst.face_info.shape[0] < OpenFaceDataset.MIN_SEQUENCE_LENGTH]
+        for pid, tid, length in short:
+            print(f"  → Patient {pid}, trial {tid}: only {length} frames")
+
+    def _save(self, name: str):
+        path = os.path.join(self.working_dir, f"{name}.pt")
+        with open(path, "wb") as f:
+            pickle.dump(self, f)
+        print(f"[Saved] {path}")
+    
+    @staticmethod
+    def _draw_pie_bar(counts, labels, title, out, do_bar=False):
+        plt.figure()
+        if do_bar:
+            plt.bar(labels, counts)
+        else:
+            plt.pie(counts, labels=labels, autopct="%1.1f%%")
+        plt.title(title)
+        ext = ".png" if do_bar else ".jpg"
+        plt.savefig(out + ext, dpi=300)
         plt.close()
 
     @staticmethod
-    def preprocess_label(y):
-        y = torch.Tensor([y])
-        return y.to(torch.long)
-
-    @staticmethod
-    def draw_pie_bar_plot(data, labels, title, file_name, do_bar=False):
-        if file_name is not None:
-            plt.figure()
-
-        if not do_bar:
-            plt.pie(data, labels=labels, autopct="%1.1f%%")
-        else:
-            if len(labels) > 2:
-                labels = [label.upper() for label in labels]
-                plt.xticks(rotation=20, fontsize=6)
-            plt.bar(labels, data)
-            plt.ylabel("Absolute frequency")
-        plt.title(title)
-
-        if file_name is not None:
-            plt.savefig(file_name + ".jpg", dpi=300)
-            plt.close()
-
-    @staticmethod
-    def draw_hist(data, maximum, title, file_name, labels=None):
-        if file_name is not None:
-            plt.figure()
-
-        if maximum > 3:
-            divisor = 3 if maximum > 20 else 0.5
-            bins = int(maximum / divisor)
-        else:
-            bins = maximum
-        ax = plt.hist(data, bins=bins)
-
-        if labels is None:
-            plt.xticks(range(0, maximum + 1, 4))
-        else:
-            plt.xticks([], [])
-        plt.ylabel("Absolute frequency")
-        plt.title(title)
-
+    def _draw_hist(data, max_value, title, out, labels=None):
+        plt.figure()
+        bins = len(labels) if labels is not None else min(50, int(max_value) + 1)
+        plt.hist(data, bins=bins)
         if labels is not None:
-            rects = ax[2].patches
-            for rect, label in zip(rects, labels):
-                height = rect.get_height()
-                plt.text(rect.get_x() + rect.get_width() / 2, height + 0.01, label,
-                         ha="center", va="bottom")
-
-        if file_name is not None:
-            plt.savefig(file_name + ".jpg", dpi=300)
-            plt.close()
+            plt.xticks(range(len(labels)), labels, rotation=45)
+        plt.title(title)
+        plt.savefig(out + ".png", dpi=300)
+        plt.close()
 
     @staticmethod
-    def load_dataset(working_dir, dataset_name, task_type=None, train_trial_id_stats=None, is_boa=False, is_toy=False,
-                     s3=None):
-        if is_toy and not is_boa:
-            data_fold = "data/toy/"
-        elif is_boa:
-            data_fold = "data/boa/"
-        else:
-            data_fold = OpenFaceDataset.data_fold
-        file_path = working_dir + data_fold + dataset_name + ".pt"
-        file = open(file_path, "rb") if s3 is None else s3.open(file_path, "rb")
-        dataset = pickle.load(file)
-        dataset.task_type = task_type
-
-        if train_trial_id_stats is not None:
-            dataset.trial_id_stats = train_trial_id_stats
-
-        return dataset
-
-
-# Main
-if __name__ == "__main__":
-    # Define seeds
-    seed = 1
-    random.seed(seed)
-
-    # Define variables
-    working_dir1 = "./../../"
-    file_name1 = "processed_openface_toy_data.csv"
-    dataset_name1 = "complete_dataset"
-
-    # Read data
-    # dataset1 = OpenFaceDataset(dataset_name=dataset_name1, working_dir=working_dir1, file_name=file_name1)
-
-    # Compute statistics
-    # dataset1.compute_statistics()
-
-    # Remove short sequences
-    # dataset1.remove_short_sequences()
-
-    # Divide dataset
-    train_perc1 = 0.7
-    # dataset1.split_dataset(train_perc=train_perc1)
-
-    # Load training set
-    print()
-    train_set1 = OpenFaceDataset.load_dataset(working_dir=working_dir1, dataset_name="training_set")
-    train_set1.compute_statistics()
-    # train_set1.store_dataset()
-
-    # Load training set
-    print()
-    val_set1 = OpenFaceDataset.load_dataset(working_dir=working_dir1, dataset_name="validation_set")
-    val_set1.compute_statistics(train_set1.trial_id_stats)
-
-    # Load training set
-    print()
-    test_set1 = OpenFaceDataset.load_dataset(working_dir=working_dir1, dataset_name="test_set")
-    test_set1.compute_statistics(train_set1.trial_id_stats)
+    def _interaction_plot(var1, var2, row_labels, col_labels, title, out):
+        cm = np.zeros((len(row_labels), len(col_labels)), dtype=int)
+        for v1, v2 in zip(var1, var2):
+            cm[v1, v2] += 1
+        plt.figure(figsize=(6, 4))
+        plt.imshow(cm, cmap="Reds")
+        plt.xticks(range(len(col_labels)), col_labels, rotation=45)
+        plt.yticks(range(len(row_labels)), row_labels)
+        plt.colorbar(label="Count")
+        plt.title(title)
+        plt.savefig(out + ".png", dpi=300, bbox_inches="tight")
+        plt.close()
