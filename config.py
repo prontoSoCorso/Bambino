@@ -74,37 +74,36 @@ class Config_03_train:
 
     # LSTM-FCN Hyperparameters
     # Training
-    lstmfcn_num_epochs      = 5
+    lstmfcn_num_epochs      = 100
     lstmfcn_batch_size      = 16
-    lstmfcn_learning_rate   = 1e-5
+    lstmfcn_learning_rate   = 3e-6
     lstmfcn_use_focal       = True
 
     # Early stopping
     lstmfcn_early_stopping_patience = lstmfcn_num_epochs
 
     # Scheduler: OneCycleLR
-    lstmfcn_pct_start       = 0.3
-    lstmfcn_max_lr          = 1e-3
+    lstmfcn_pct_start       = 0.15
+    lstmfcn_max_lr          = 3e-3
     lstmfcn_anneal_strategy = "cos"
 
     # Model
     enc_hidden_dim      = 64
     dropout_enc         = 0.2
-    n_heads             = 2
-    dropout_attn        = 0.1
+    n_heads             = 4
+    dropout_attn        = 0.15
 
-    lstm_hidden_dim     = 256
-    lstm_layers         = 2
+    lstm_hidden_dim     = 64
+    lstm_layers         = 1
     bidirectional       = True
-    dropout_lstm        = 0.2
+    dropout_lstm        = 0.3
 
-    cnn_kernel_sizes    = "7,5,3"
-    cnn_filter_sizes    = "128,256,128"
+    cnn_kernel_sizes    = "5,7,9"
+    cnn_filter_sizes    = "128,128,128"
     dropout_cnn         = 0.1
-    se_ratio            = 0.25
+    se_ratio            = 0.3
 
-    dropout_classifier  = 0.3
-
+    dropout_classifier  = 0.4
 
 
 class Config_03_train_with_optimization(Config_03_train):
@@ -113,7 +112,7 @@ class Config_03_train_with_optimization(Config_03_train):
     
     # Optuna optimization control
     optimize_with_optuna = True
-    optuna_n_trials_LSTMFCN = 5  # Number of optimization trials
+    optuna_n_trials_LSTMFCN = 23  # Number of optimization trials
     
     # LSTM-FCN search space for Optuna
     @staticmethod

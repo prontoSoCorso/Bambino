@@ -109,7 +109,7 @@ def calculate_metrics(y_true, y_pred, y_prob):
         "roc_auc": roc_auc,
         "precision": precision_score(y_true, y_pred),
         "recall": recall_score(y_true, y_pred),
-        "MCC": matthews_corrcoef(y_true, y_pred),
+        "mcc": matthews_corrcoef(y_true, y_pred),
         "kappa": cohen_kappa_score(y_true, y_pred),
         "brier": brier_score_loss(y_true, y_prob),
         "f1": f1_score(y_true, y_pred, average='binary', zero_division=0),  # Binary F1 (positive class)
@@ -128,4 +128,3 @@ def calculate_metrics(y_true, y_pred, y_prob):
             metrics[key] = np.round(value, decimals) # Arrotonda gli elementi dell'array
 
     return metrics
-

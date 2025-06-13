@@ -128,10 +128,10 @@ def train_model(model, train_loader, val_loader, config, model_save_path, trial=
         print(f"📊 Training batches: {len(train_loader)}, Validation batches: {len(val_loader)}")
 
     # Training tracking
-    best_metric = float('inf')
+    best_metric = 0.0
     epochs_no_improve = 0
     train_history = []
-    ref_metric = 'brier'
+    ref_metric = 'mcc'
     base_threshold = 0.5
 
     for epoch in trange(lstmfcn_num_epochs, desc="Training Progress", disable=optimization_mode):
@@ -166,7 +166,7 @@ def train_model(model, train_loader, val_loader, config, model_save_path, trial=
             'train_loss': train_loss,
             'train_acc': train_acc,
             'val_loss': val_loss,
-            'val_mcc': val_metrics.get('MCC', 0),
+            'val_mcc': val_metrics.get('mcc', 0),
             'val_brier': val_metrics.get('brier', 0),
             'val_balanced_acc': val_metrics.get('balanced_accuracy', 0),
             'val_f1': val_metrics.get('f1_macro', 0),
@@ -183,7 +183,7 @@ def train_model(model, train_loader, val_loader, config, model_save_path, trial=
             f"Train Loss: {train_loss:.4f} | "
             f"Train Acc: {train_acc:.4f} | "
             f"Val Loss: {val_loss:.4f} | "
-            f"mcc: {val_metrics.get('MCC', 0):.4f} | "
+            f"mcc: {val_metrics.get('mcc', 0):.4f} | "
             f"Brier: {val_metrics.get('brier', 0):.4f} | "
             f"Bal Acc: {val_metrics.get('balanced_accuracy', 0):.4f} | "
             f"f1_macro: {val_metrics.get('f1_macro', 0):.4f} | "
@@ -193,7 +193,7 @@ def train_model(model, train_loader, val_loader, config, model_save_path, trial=
         )
 
         # Model checkpointing
-        if primary_metric + 1e-4 < best_metric:
+        if abs(best_metric) + 1e-3 < abs(primary_metric):
             best_metric = primary_metric
             epochs_no_improve = 0
 
@@ -231,7 +231,7 @@ def train_model(model, train_loader, val_loader, config, model_save_path, trial=
         # Handle Optuna pruning
         if optimization_mode and trial is not None:
             # Report intermediate value for pruning
-            trial.report(val_metrics.get('balanced_accuracy', 0), epoch)
+            trial.report(val_metrics.get('mcc', 0), epoch)
             
             # Check if trial should be pruned
             if trial.should_prune():
@@ -248,7 +248,6 @@ def train_model(model, train_loader, val_loader, config, model_save_path, trial=
         logging.info(f"📥 Loaded best model from epoch {checkpoint['epoch']} with metric {checkpoint['best_metric']:.4f}")
     
     return model, train_history
-
 
 # ────────────────────────────────────────────────────────────────────────────────
 # Model evaluation

@@ -1,0 +1,34 @@
+{
+  "study_name": "LSTMFCN",
+  "n_trials": 77,
+  "n_completed": 76,
+  "best_value": 0.3043,
+  "best_params": {
+    "lstmfcn_batch_size": 16,
+    "lstmfcn_learning_rate": 3.0700308386712098e-06,
+    "lstmfcn_max_lr": 0.003332458285116654,
+    "lstmfcn_pct_start": 0.13191290168826444,
+    "enc_hidden_dim": 64,
+    "dropout_enc": 0.20598130124194092,
+    "n_heads": 4,
+    "dropout_attn": 0.1640319498768352,
+    "lstm_hidden_dim": 64,
+    "lstm_layers": 1,
+    "bidirectional": true,
+    "dropout_lstm": 0.33813750433043643,
+    "cnn_filter_sizes": "128,128,128",
+    "cnn_kernel_sizes": "5,7,9",
+    "dropout_cnn": 0.08850154066815996,
+    "se_ratio": 0.30539661381603667,
+    "dropout_classifier": 0.4461650150546538,
+    "lstmfcn_use_focal": true
+  },
+  "best_trial_number": 33,
+  "statistics": {
+    "mean_value": 0.1677881578947369,
+    "std_value": 0.05387322394190585,
+    "min_value": 0.0412,
+    "max_value": 0.3043,
+    "median_value": 0.1742
+  }
+}

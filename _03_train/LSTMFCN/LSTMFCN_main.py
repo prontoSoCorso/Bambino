@@ -84,7 +84,6 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True,
     # Compute statistics
     if not optimization_mode:
         print("\n📊 Computing dataset statistics...")
-    print("\n📊 Computing dataset statistics...")
     train_ds.compute_statistics()
     val_ds.trial_id_stats = train_ds.trial_id_stats
     test_ds.trial_id_stats = train_ds.trial_id_stats
@@ -92,7 +91,6 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True,
     # Data quality analysis (not in optimization mode)
     if not optimization_mode:
         dataset_utils.analyze_data_quality(datasets)
-    dataset_utils.analyze_data_quality(datasets)
 
     # ─────────────── NORMALIZATION STEP ───────────────
     # Compute per‐feature mean/std on the TRAIN set, then apply to all splits
@@ -205,7 +203,7 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True,
             pass
         
         # Return the best validation metric for Optuna
-        best_val_score = max([epoch_data.get('val_f1', 0) for epoch_data in train_history])
+        best_val_score = max([epoch_data.get('val_mcc', 0) for epoch_data in train_history])
         return best_val_score
 
     # ─── PLOT TRAINING HISTORY ─────────────────────────────────────────

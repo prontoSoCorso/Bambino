@@ -36,7 +36,7 @@ def analyze_study(study, save_plots=True, output_dir=None):
     """Analyze and visualize Optuna study results"""
     
     if output_dir is None:
-        output_dir = Path(__file__).resolve().parent / "optuna_analysis"
+        output_dir = Path(__file__).resolve().parent / "optuna_analysis" / study.study_name
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     

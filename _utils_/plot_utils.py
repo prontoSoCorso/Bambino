@@ -196,7 +196,7 @@ def plot_training_history(
 
 
 
-def compute_UMAP(dataset, output_dir, filename):
+def compute_UMAP(dataset, output_dir, filename, modalities={'g': "gaze_info",'h': "head_info",'f': "face_info"}):
     """
     Esegue UMAP su un singolo dataset PyTorch custom, estraendo per ogni istanza:
        - media temporale di gaze_info, head_info, face_info
@@ -216,8 +216,8 @@ def compute_UMAP(dataset, output_dir, filename):
     for inst in dataset.instances:
         # per ogni modality prendi la media lungo il tempo (asse 0)
         vecs = []
-        for attr in ("gaze_info", "head_info", "face_info"):
-            data = getattr(inst, attr)
+        for _, value in modalities.items():
+            data = getattr(inst, value)
             # se è torch.Tensor → numpy
             if isinstance(data, torch.Tensor):
                 data = data.cpu().numpy()
@@ -406,8 +406,3 @@ def compute_UMAP_plotly(dataset,
         return new_fig
 
     app.run(debug=True, port=port)
-
-    
-
-
-

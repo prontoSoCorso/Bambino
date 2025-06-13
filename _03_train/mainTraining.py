@@ -14,7 +14,7 @@ while not os.path.basename(parent_dir) == "Bambino":
 sys.path.append(parent_dir)
 
 from config import Config_03_train_with_optimization as conf, utils
-from LSTMFCN.LSTMFCN_main import lstmfcn_main as lstm_main
+from LSTMFCN.LSTMFCN_main import lstmfcn_main
 from DataUtils.OpenFaceDataset import OpenFaceDataset
 from DataUtils.BoaOpenFaceDataset import BoaOpenFaceDataset
 
@@ -47,7 +47,7 @@ def create_study(model_name):
         direction="maximize",
         study_name=f"{model_name}",
         storage=storage_name,
-        load_if_exists=False,
+        load_if_exists=True,
         pruner=pruner,
         sampler=optuna.samplers.TPESampler(seed=utils.seed)
     )
@@ -69,7 +69,7 @@ def optimize_lstmfcn():
     def objective(trial):
         try:
             # Run LSTM-FCN training with trial parameters
-            val_score = lstm_main(
+            val_score = lstmfcn_main(
                 trial=trial,
                 run_test_evaluation=False  # Disable test eval during optimization
             )
@@ -97,18 +97,7 @@ def optimize_lstmfcn():
     print(f"🎯 Best parameters:")
     for key, value in study.best_params.items():
         print(f"   {key}: {value}")
-    
-    # Save optimization results
-    results_dir = Path(__file__).resolve().parent / "optimization_results"
-    results_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Save best parameters to file
-    import json
-    best_params_file = results_dir / "best_lstmfcn_params.json"
-    with open(best_params_file, 'w') as f:
-        json.dump(study.best_params, f, indent=2)
-    print(f"💾 Best parameters saved to: {best_params_file}")
-    
+        
     return study.best_params
 
 
@@ -116,7 +105,7 @@ def train_lstmfcn_with_defaults():
     """Train LSTM-FCN with default hyperparameters"""
     print("🚀 Training LSTM-FCN with default hyperparameters...")
     
-    lstm_main(
+    lstmfcn_main(
         train_path="", val_path="", test_path="",
         default_path=True,
         run_test_evaluation=True,
@@ -150,7 +139,7 @@ def main(models_to_train=["LSTMFCN"],
                 print(f"{'='*60}")
                 
                 # After optimization, retrain with best params and run test evaluation
-                lstm_main(
+                lstmfcn_main(
                     trial=None,
                     run_test_evaluation=True,  # Enable final test evaluation
                     **best_params
