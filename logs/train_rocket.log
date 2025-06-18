@@ -1,0 +1,468 @@
+2025-06-13 16:49:33 - INFO - Best threshold: 0.79  bal_acc=0.674
+2025-06-13 16:49:33 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 16:49:33 - INFO - accuracy            : 0.5839
+2025-06-13 16:49:33 - INFO - balanced_accuracy   : 0.5593
+2025-06-13 16:49:33 - INFO - roc_auc             : 0.5579
+2025-06-13 16:49:33 - INFO - precision           : 0.8354
+2025-06-13 16:49:33 - INFO - recall              : 0.6000
+2025-06-13 16:49:33 - INFO - mcc                 : 0.0954
+2025-06-13 16:49:33 - INFO - kappa               : 0.0827
+2025-06-13 16:49:33 - INFO - brier               : 0.1575
+2025-06-13 16:49:33 - INFO - f1                  : 0.6984
+2025-06-13 16:49:33 - INFO - f1_macro            : 0.5139
+2025-06-13 16:49:33 - INFO - f1_weighted         : 0.6257
+2025-06-13 16:49:33 - INFO - 'conf_matrix': [[14 13]
+ [44 66]]
+2025-06-13 16:49:33 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 16:49:33 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 16:49:33 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 16:50:11 - INFO - Best threshold: 0.79  bal_acc=0.674
+2025-06-13 16:50:12 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 16:50:12 - INFO - accuracy            : 0.5839
+2025-06-13 16:50:12 - INFO - balanced_accuracy   : 0.5593
+2025-06-13 16:50:12 - INFO - roc_auc             : 0.5579
+2025-06-13 16:50:12 - INFO - precision           : 0.8354
+2025-06-13 16:50:12 - INFO - recall              : 0.6000
+2025-06-13 16:50:12 - INFO - mcc                 : 0.0954
+2025-06-13 16:50:12 - INFO - kappa               : 0.0827
+2025-06-13 16:50:12 - INFO - brier               : 0.1575
+2025-06-13 16:50:12 - INFO - f1                  : 0.6984
+2025-06-13 16:50:12 - INFO - f1_macro            : 0.5139
+2025-06-13 16:50:12 - INFO - f1_weighted         : 0.6257
+2025-06-13 16:50:12 - INFO - 'conf_matrix': [[14 13]
+ [44 66]]
+2025-06-13 16:50:12 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 16:50:12 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 16:50:12 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 16:51:14 - INFO - Best threshold: 0.79  bal_acc=0.674
+2025-06-13 16:51:14 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 16:51:14 - INFO - accuracy            : 0.5839
+2025-06-13 16:51:14 - INFO - balanced_accuracy   : 0.5593
+2025-06-13 16:51:14 - INFO - roc_auc             : 0.5579
+2025-06-13 16:51:14 - INFO - precision           : 0.8354
+2025-06-13 16:51:14 - INFO - recall              : 0.6000
+2025-06-13 16:51:14 - INFO - mcc                 : 0.0954
+2025-06-13 16:51:14 - INFO - kappa               : 0.0827
+2025-06-13 16:51:14 - INFO - brier               : 0.1575
+2025-06-13 16:51:14 - INFO - f1                  : 0.6984
+2025-06-13 16:51:14 - INFO - f1_macro            : 0.5139
+2025-06-13 16:51:14 - INFO - f1_weighted         : 0.6257
+2025-06-13 16:51:14 - INFO - 'conf_matrix': [[14 13]
+ [44 66]]
+2025-06-13 16:51:14 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 16:51:15 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 16:51:15 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:12:44 - INFO - Best threshold: 0.76  bal_acc=0.629
+2025-06-13 17:12:45 - INFO - === FINAL TEST RESULTS (thr=0.76) ===
+2025-06-13 17:12:45 - INFO - accuracy            : 0.6423
+2025-06-13 17:12:45 - INFO - balanced_accuracy   : 0.5537
+2025-06-13 17:12:45 - INFO - roc_auc             : 0.5508
+2025-06-13 17:12:45 - INFO - precision           : 0.8280
+2025-06-13 17:12:45 - INFO - recall              : 0.7000
+2025-06-13 17:12:45 - INFO - mcc                 : 0.0915
+2025-06-13 17:12:45 - INFO - kappa               : 0.0868
+2025-06-13 17:12:45 - INFO - brier               : 0.1578
+2025-06-13 17:12:45 - INFO - f1                  : 0.7586
+2025-06-13 17:12:45 - INFO - f1_macro            : 0.5342
+2025-06-13 17:12:45 - INFO - f1_weighted         : 0.6702
+2025-06-13 17:12:45 - INFO - 'conf_matrix': [[11 16]
+ [33 77]]
+2025-06-13 17:12:45 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:12:45 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:12:45 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:13:18 - INFO - Best threshold: 0.79  bal_acc=0.598
+2025-06-13 17:13:19 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 17:13:19 - INFO - accuracy            : 0.4818
+2025-06-13 17:13:19 - INFO - balanced_accuracy   : 0.4397
+2025-06-13 17:13:19 - INFO - roc_auc             : 0.4296
+2025-06-13 17:13:19 - INFO - precision           : 0.7671
+2025-06-13 17:13:19 - INFO - recall              : 0.5091
+2025-06-13 17:13:19 - INFO - mcc                 : -0.0961
+2025-06-13 17:13:19 - INFO - kappa               : -0.0795
+2025-06-13 17:13:19 - INFO - brier               : 0.1679
+2025-06-13 17:13:19 - INFO - f1                  : 0.6120
+2025-06-13 17:13:19 - INFO - f1_macro            : 0.4159
+2025-06-13 17:13:19 - INFO - f1_weighted         : 0.5347
+2025-06-13 17:13:19 - INFO - 'conf_matrix': [[10 17]
+ [54 56]]
+2025-06-13 17:13:19 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:13:19 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:13:19 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:13:34 - INFO - Best threshold: 0.85  bal_acc=0.625
+2025-06-13 17:13:34 - INFO - === FINAL TEST RESULTS (thr=0.85) ===
+2025-06-13 17:13:34 - INFO - accuracy            : 0.3358
+2025-06-13 17:13:34 - INFO - balanced_accuracy   : 0.5305
+2025-06-13 17:13:34 - INFO - roc_auc             : 0.5232
+2025-06-13 17:13:34 - INFO - precision           : 0.8519
+2025-06-13 17:13:34 - INFO - recall              : 0.2091
+2025-06-13 17:13:34 - INFO - mcc                 : 0.0609
+2025-06-13 17:13:34 - INFO - kappa               : 0.0282
+2025-06-13 17:13:34 - INFO - brier               : 0.1597
+2025-06-13 17:13:34 - INFO - f1                  : 0.3358
+2025-06-13 17:13:34 - INFO - f1_macro            : 0.3358
+2025-06-13 17:13:34 - INFO - f1_weighted         : 0.3358
+2025-06-13 17:13:34 - INFO - 'conf_matrix': [[23  4]
+ [87 23]]
+2025-06-13 17:13:34 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:13:34 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:13:34 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:14:13 - INFO - Best threshold: 0.85  bal_acc=0.625
+2025-06-13 17:14:13 - INFO - === FINAL TEST RESULTS (thr=0.85) ===
+2025-06-13 17:14:13 - INFO - accuracy            : 0.3358
+2025-06-13 17:14:13 - INFO - balanced_accuracy   : 0.5305
+2025-06-13 17:14:13 - INFO - roc_auc             : 0.5232
+2025-06-13 17:14:13 - INFO - precision           : 0.8519
+2025-06-13 17:14:13 - INFO - recall              : 0.2091
+2025-06-13 17:14:13 - INFO - mcc                 : 0.0609
+2025-06-13 17:14:13 - INFO - kappa               : 0.0282
+2025-06-13 17:14:13 - INFO - brier               : 0.1597
+2025-06-13 17:14:13 - INFO - f1                  : 0.3358
+2025-06-13 17:14:13 - INFO - f1_macro            : 0.3358
+2025-06-13 17:14:13 - INFO - f1_weighted         : 0.3358
+2025-06-13 17:14:13 - INFO - 'conf_matrix': [[23  4]
+ [87 23]]
+2025-06-13 17:14:13 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:14:13 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:14:13 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:14:51 - INFO - Best threshold: 0.85  bal_acc=0.625
+2025-06-13 17:14:51 - INFO - === FINAL TEST RESULTS (thr=0.85) ===
+2025-06-13 17:14:51 - INFO - accuracy            : 0.3358
+2025-06-13 17:14:51 - INFO - balanced_accuracy   : 0.5305
+2025-06-13 17:14:51 - INFO - roc_auc             : 0.5232
+2025-06-13 17:14:51 - INFO - precision           : 0.8519
+2025-06-13 17:14:51 - INFO - recall              : 0.2091
+2025-06-13 17:14:51 - INFO - mcc                 : 0.0609
+2025-06-13 17:14:51 - INFO - kappa               : 0.0282
+2025-06-13 17:14:51 - INFO - brier               : 0.1597
+2025-06-13 17:14:51 - INFO - f1                  : 0.3358
+2025-06-13 17:14:51 - INFO - f1_macro            : 0.3358
+2025-06-13 17:14:51 - INFO - f1_weighted         : 0.3358
+2025-06-13 17:14:51 - INFO - 'conf_matrix': [[23  4]
+ [87 23]]
+2025-06-13 17:14:51 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:14:51 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:14:51 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:15:25 - INFO - Best threshold: 0.85  bal_acc=0.625
+2025-06-13 17:15:26 - INFO - === FINAL TEST RESULTS (thr=0.85) ===
+2025-06-13 17:15:26 - INFO - accuracy            : 0.3358
+2025-06-13 17:15:26 - INFO - balanced_accuracy   : 0.5305
+2025-06-13 17:15:26 - INFO - roc_auc             : 0.5232
+2025-06-13 17:15:26 - INFO - precision           : 0.8519
+2025-06-13 17:15:26 - INFO - recall              : 0.2091
+2025-06-13 17:15:26 - INFO - mcc                 : 0.0609
+2025-06-13 17:15:26 - INFO - kappa               : 0.0282
+2025-06-13 17:15:26 - INFO - brier               : 0.1597
+2025-06-13 17:15:26 - INFO - f1                  : 0.3358
+2025-06-13 17:15:26 - INFO - f1_macro            : 0.3358
+2025-06-13 17:15:26 - INFO - f1_weighted         : 0.3358
+2025-06-13 17:15:26 - INFO - 'conf_matrix': [[23  4]
+ [87 23]]
+2025-06-13 17:15:26 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:15:26 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:15:26 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:16:04 - INFO - Best threshold: 0.78  bal_acc=0.665
+2025-06-13 17:16:04 - INFO - === FINAL TEST RESULTS (thr=0.78) ===
+2025-06-13 17:16:04 - INFO - accuracy            : 0.5620
+2025-06-13 17:16:04 - INFO - balanced_accuracy   : 0.4758
+2025-06-13 17:16:04 - INFO - roc_auc             : 0.5162
+2025-06-13 17:16:04 - INFO - precision           : 0.7907
+2025-06-13 17:16:04 - INFO - recall              : 0.6182
+2025-06-13 17:16:04 - INFO - mcc                 : -0.0399
+2025-06-13 17:16:04 - INFO - kappa               : -0.0363
+2025-06-13 17:16:04 - INFO - brier               : 0.1604
+2025-06-13 17:16:04 - INFO - f1                  : 0.6939
+2025-06-13 17:16:04 - INFO - f1_macro            : 0.4623
+2025-06-13 17:16:04 - INFO - f1_weighted         : 0.6026
+2025-06-13 17:16:04 - INFO - 'conf_matrix': [[ 9 18]
+ [42 68]]
+2025-06-13 17:16:04 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:16:04 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:16:04 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:17:19 - INFO - Best threshold: 0.78  bal_acc=0.665
+2025-06-13 17:17:19 - INFO - === FINAL TEST RESULTS (thr=0.78) ===
+2025-06-13 17:17:19 - INFO - accuracy            : 0.5620
+2025-06-13 17:17:19 - INFO - balanced_accuracy   : 0.4758
+2025-06-13 17:17:19 - INFO - roc_auc             : 0.5162
+2025-06-13 17:17:19 - INFO - precision           : 0.7907
+2025-06-13 17:17:19 - INFO - recall              : 0.6182
+2025-06-13 17:17:19 - INFO - mcc                 : -0.0399
+2025-06-13 17:17:19 - INFO - kappa               : -0.0363
+2025-06-13 17:17:19 - INFO - brier               : 0.1604
+2025-06-13 17:17:19 - INFO - f1                  : 0.6939
+2025-06-13 17:17:19 - INFO - f1_macro            : 0.4623
+2025-06-13 17:17:19 - INFO - f1_weighted         : 0.6026
+2025-06-13 17:17:19 - INFO - 'conf_matrix': [[ 9 18]
+ [42 68]]
+2025-06-13 17:17:19 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:17:19 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:17:19 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:18:43 - INFO - Best threshold: 0.78  bal_acc=0.665
+2025-06-13 17:18:43 - INFO - === FINAL TEST RESULTS (thr=0.78) ===
+2025-06-13 17:18:43 - INFO - accuracy            : 0.5620
+2025-06-13 17:18:43 - INFO - balanced_accuracy   : 0.4758
+2025-06-13 17:18:43 - INFO - roc_auc             : 0.5162
+2025-06-13 17:18:43 - INFO - precision           : 0.7907
+2025-06-13 17:18:43 - INFO - recall              : 0.6182
+2025-06-13 17:18:43 - INFO - mcc                 : -0.0399
+2025-06-13 17:18:43 - INFO - kappa               : -0.0363
+2025-06-13 17:18:43 - INFO - brier               : 0.1604
+2025-06-13 17:18:43 - INFO - f1                  : 0.6939
+2025-06-13 17:18:43 - INFO - f1_macro            : 0.4623
+2025-06-13 17:18:43 - INFO - f1_weighted         : 0.6026
+2025-06-13 17:18:43 - INFO - 'conf_matrix': [[ 9 18]
+ [42 68]]
+2025-06-13 17:18:43 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:18:43 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:18:43 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:19:47 - INFO - Best threshold: 0.78  bal_acc=0.674
+2025-06-13 17:19:47 - INFO - === FINAL TEST RESULTS (thr=0.78) ===
+2025-06-13 17:19:47 - INFO - accuracy            : 0.5912
+2025-06-13 17:19:47 - INFO - balanced_accuracy   : 0.5079
+2025-06-13 17:19:47 - INFO - roc_auc             : 0.4677
+2025-06-13 17:19:47 - INFO - precision           : 0.8068
+2025-06-13 17:19:47 - INFO - recall              : 0.6455
+2025-06-13 17:19:47 - INFO - mcc                 : 0.0131
+2025-06-13 17:19:47 - INFO - kappa               : 0.0121
+2025-06-13 17:19:47 - INFO - brier               : 0.1616
+2025-06-13 17:19:47 - INFO - f1                  : 0.7172
+2025-06-13 17:19:47 - INFO - f1_macro            : 0.4902
+2025-06-13 17:19:47 - INFO - f1_weighted         : 0.6277
+2025-06-13 17:19:47 - INFO - 'conf_matrix': [[10 17]
+ [39 71]]
+2025-06-13 17:19:47 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:19:47 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:19:47 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:21:54 - INFO - Best threshold: 0.79  bal_acc=0.674
+2025-06-13 17:21:54 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 17:21:54 - INFO - accuracy            : 0.5839
+2025-06-13 17:21:54 - INFO - balanced_accuracy   : 0.5593
+2025-06-13 17:21:54 - INFO - roc_auc             : 0.5579
+2025-06-13 17:21:54 - INFO - precision           : 0.8354
+2025-06-13 17:21:54 - INFO - recall              : 0.6000
+2025-06-13 17:21:54 - INFO - mcc                 : 0.0954
+2025-06-13 17:21:54 - INFO - kappa               : 0.0827
+2025-06-13 17:21:54 - INFO - brier               : 0.1575
+2025-06-13 17:21:54 - INFO - f1                  : 0.6984
+2025-06-13 17:21:54 - INFO - f1_macro            : 0.5139
+2025-06-13 17:21:54 - INFO - f1_weighted         : 0.6257
+2025-06-13 17:21:54 - INFO - 'conf_matrix': [[14 13]
+ [44 66]]
+2025-06-13 17:21:54 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:21:54 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:21:54 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:22:20 - INFO - Best threshold: 0.79  bal_acc=0.674
+2025-06-13 17:22:20 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 17:22:20 - INFO - accuracy            : 0.5839
+2025-06-13 17:22:20 - INFO - balanced_accuracy   : 0.5593
+2025-06-13 17:22:20 - INFO - roc_auc             : 0.5579
+2025-06-13 17:22:20 - INFO - precision           : 0.8354
+2025-06-13 17:22:20 - INFO - recall              : 0.6000
+2025-06-13 17:22:20 - INFO - mcc                 : 0.0954
+2025-06-13 17:22:20 - INFO - kappa               : 0.0827
+2025-06-13 17:22:20 - INFO - brier               : 0.1575
+2025-06-13 17:22:20 - INFO - f1                  : 0.6984
+2025-06-13 17:22:20 - INFO - f1_macro            : 0.5139
+2025-06-13 17:22:20 - INFO - f1_weighted         : 0.6257
+2025-06-13 17:22:20 - INFO - 'conf_matrix': [[14 13]
+ [44 66]]
+2025-06-13 17:22:20 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:22:20 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:22:20 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:22:39 - INFO - Best threshold: 0.79  bal_acc=0.674
+2025-06-13 17:22:39 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 17:22:39 - INFO - accuracy            : 0.5839
+2025-06-13 17:22:39 - INFO - balanced_accuracy   : 0.5593
+2025-06-13 17:22:39 - INFO - roc_auc             : 0.5579
+2025-06-13 17:22:39 - INFO - precision           : 0.8354
+2025-06-13 17:22:39 - INFO - recall              : 0.6000
+2025-06-13 17:22:39 - INFO - mcc                 : 0.0954
+2025-06-13 17:22:39 - INFO - kappa               : 0.0827
+2025-06-13 17:22:39 - INFO - brier               : 0.1575
+2025-06-13 17:22:39 - INFO - f1                  : 0.6984
+2025-06-13 17:22:39 - INFO - f1_macro            : 0.5139
+2025-06-13 17:22:39 - INFO - f1_weighted         : 0.6257
+2025-06-13 17:22:39 - INFO - 'conf_matrix': [[14 13]
+ [44 66]]
+2025-06-13 17:22:39 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:22:39 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:22:39 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:23:11 - INFO - Best threshold: 0.79  bal_acc=0.674
+2025-06-13 17:23:11 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 17:23:11 - INFO - accuracy            : 0.5839
+2025-06-13 17:23:11 - INFO - balanced_accuracy   : 0.5593
+2025-06-13 17:23:11 - INFO - roc_auc             : 0.5579
+2025-06-13 17:23:11 - INFO - precision           : 0.8354
+2025-06-13 17:23:11 - INFO - recall              : 0.6000
+2025-06-13 17:23:11 - INFO - mcc                 : 0.0954
+2025-06-13 17:23:11 - INFO - kappa               : 0.0827
+2025-06-13 17:23:11 - INFO - brier               : 0.1575
+2025-06-13 17:23:11 - INFO - f1                  : 0.6984
+2025-06-13 17:23:11 - INFO - f1_macro            : 0.5139
+2025-06-13 17:23:11 - INFO - f1_weighted         : 0.6257
+2025-06-13 17:23:11 - INFO - 'conf_matrix': [[14 13]
+ [44 66]]
+2025-06-13 17:23:11 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:23:11 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:23:11 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:23:29 - INFO - Best threshold: 0.79  bal_acc=0.674
+2025-06-13 17:23:29 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 17:23:29 - INFO - accuracy            : 0.5839
+2025-06-13 17:23:29 - INFO - balanced_accuracy   : 0.5593
+2025-06-13 17:23:29 - INFO - roc_auc             : 0.5579
+2025-06-13 17:23:29 - INFO - precision           : 0.8354
+2025-06-13 17:23:29 - INFO - recall              : 0.6000
+2025-06-13 17:23:29 - INFO - mcc                 : 0.0954
+2025-06-13 17:23:29 - INFO - kappa               : 0.0827
+2025-06-13 17:23:29 - INFO - brier               : 0.1575
+2025-06-13 17:23:29 - INFO - f1                  : 0.6984
+2025-06-13 17:23:29 - INFO - f1_macro            : 0.5139
+2025-06-13 17:23:29 - INFO - f1_weighted         : 0.6257
+2025-06-13 17:23:29 - INFO - 'conf_matrix': [[14 13]
+ [44 66]]
+2025-06-13 17:23:29 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:23:29 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:23:29 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:25:40 - INFO - Best threshold: 0.78  bal_acc=0.661
+2025-06-13 17:25:41 - INFO - === FINAL TEST RESULTS (thr=0.78) ===
+2025-06-13 17:25:41 - INFO - accuracy            : 0.5620
+2025-06-13 17:25:41 - INFO - balanced_accuracy   : 0.4338
+2025-06-13 17:25:41 - INFO - roc_auc             : 0.4414
+2025-06-13 17:25:41 - INFO - precision           : 0.7717
+2025-06-13 17:25:41 - INFO - recall              : 0.6455
+2025-06-13 17:25:41 - INFO - mcc                 : -0.1121
+2025-06-13 17:25:41 - INFO - kappa               : -0.1057
+2025-06-13 17:25:41 - INFO - brier               : 0.1651
+2025-06-13 17:25:41 - INFO - f1                  : 0.7030
+2025-06-13 17:25:41 - INFO - f1_macro            : 0.4348
+2025-06-13 17:25:41 - INFO - f1_weighted         : 0.5973
+2025-06-13 17:25:41 - INFO - 'conf_matrix': [[ 6 21]
+ [39 71]]
+2025-06-13 17:25:41 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:25:41 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:25:41 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:26:25 - INFO - Best threshold: 0.78  bal_acc=0.688
+2025-06-13 17:26:25 - INFO - === FINAL TEST RESULTS (thr=0.78) ===
+2025-06-13 17:26:25 - INFO - accuracy            : 0.5985
+2025-06-13 17:26:25 - INFO - balanced_accuracy   : 0.5264
+2025-06-13 17:26:25 - INFO - roc_auc             : 0.5333
+2025-06-13 17:26:25 - INFO - precision           : 0.8161
+2025-06-13 17:26:25 - INFO - recall              : 0.6455
+2025-06-13 17:26:25 - INFO - mcc                 : 0.0437
+2025-06-13 17:26:25 - INFO - kappa               : 0.0400
+2025-06-13 17:26:25 - INFO - brier               : 0.1606
+2025-06-13 17:26:25 - INFO - f1                  : 0.7208
+2025-06-13 17:26:25 - INFO - f1_macro            : 0.5033
+2025-06-13 17:26:25 - INFO - f1_weighted         : 0.6351
+2025-06-13 17:26:25 - INFO - 'conf_matrix': [[11 16]
+ [39 71]]
+2025-06-13 17:26:25 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:26:25 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:26:25 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:26:55 - INFO - Best threshold: 0.78  bal_acc=0.688
+2025-06-13 17:26:55 - INFO - === FINAL TEST RESULTS (thr=0.78) ===
+2025-06-13 17:26:55 - INFO - accuracy            : 0.5985
+2025-06-13 17:26:55 - INFO - balanced_accuracy   : 0.5264
+2025-06-13 17:26:55 - INFO - roc_auc             : 0.5333
+2025-06-13 17:26:55 - INFO - precision           : 0.8161
+2025-06-13 17:26:55 - INFO - recall              : 0.6455
+2025-06-13 17:26:55 - INFO - mcc                 : 0.0437
+2025-06-13 17:26:55 - INFO - kappa               : 0.0400
+2025-06-13 17:26:55 - INFO - brier               : 0.1606
+2025-06-13 17:26:55 - INFO - f1                  : 0.7208
+2025-06-13 17:26:55 - INFO - f1_macro            : 0.5033
+2025-06-13 17:26:55 - INFO - f1_weighted         : 0.6351
+2025-06-13 17:26:55 - INFO - 'conf_matrix': [[11 16]
+ [39 71]]
+2025-06-13 17:26:55 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:26:55 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:26:55 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:27:10 - INFO - Best threshold: 0.80  bal_acc=0.638
+2025-06-13 17:27:10 - INFO - === FINAL TEST RESULTS (thr=0.80) ===
+2025-06-13 17:27:10 - INFO - accuracy            : 0.5109
+2025-06-13 17:27:10 - INFO - balanced_accuracy   : 0.5418
+2025-06-13 17:27:10 - INFO - roc_auc             : 0.5768
+2025-06-13 17:27:10 - INFO - precision           : 0.8308
+2025-06-13 17:27:10 - INFO - recall              : 0.4909
+2025-06-13 17:27:10 - INFO - mcc                 : 0.0665
+2025-06-13 17:27:10 - INFO - kappa               : 0.0513
+2025-06-13 17:27:10 - INFO - brier               : 0.1565
+2025-06-13 17:27:10 - INFO - f1                  : 0.6171
+2025-06-13 17:27:10 - INFO - f1_macro            : 0.4702
+2025-06-13 17:27:10 - INFO - f1_weighted         : 0.5592
+2025-06-13 17:27:10 - INFO - 'conf_matrix': [[16 11]
+ [56 54]]
+2025-06-13 17:27:10 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:27:10 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:27:10 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:28:37 - INFO - Best threshold: 0.80  bal_acc=0.638
+2025-06-13 17:28:37 - INFO - === FINAL TEST RESULTS (thr=0.80) ===
+2025-06-13 17:28:37 - INFO - accuracy            : 0.5109
+2025-06-13 17:28:37 - INFO - balanced_accuracy   : 0.5418
+2025-06-13 17:28:37 - INFO - roc_auc             : 0.5768
+2025-06-13 17:28:37 - INFO - precision           : 0.8308
+2025-06-13 17:28:37 - INFO - recall              : 0.4909
+2025-06-13 17:28:37 - INFO - mcc                 : 0.0665
+2025-06-13 17:28:37 - INFO - kappa               : 0.0513
+2025-06-13 17:28:37 - INFO - brier               : 0.1565
+2025-06-13 17:28:37 - INFO - f1                  : 0.6171
+2025-06-13 17:28:37 - INFO - f1_macro            : 0.4702
+2025-06-13 17:28:37 - INFO - f1_weighted         : 0.5592
+2025-06-13 17:28:37 - INFO - 'conf_matrix': [[16 11]
+ [56 54]]
+2025-06-13 17:28:37 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:28:37 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:28:37 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:31:58 - INFO - Best threshold: 0.80  bal_acc=0.638
+2025-06-13 17:31:58 - INFO - === FINAL TEST RESULTS (thr=0.80) ===
+2025-06-13 17:31:58 - INFO - accuracy            : 0.5109
+2025-06-13 17:31:58 - INFO - balanced_accuracy   : 0.5418
+2025-06-13 17:31:58 - INFO - roc_auc             : 0.5768
+2025-06-13 17:31:58 - INFO - precision           : 0.8308
+2025-06-13 17:31:58 - INFO - recall              : 0.4909
+2025-06-13 17:31:58 - INFO - mcc                 : 0.0665
+2025-06-13 17:31:58 - INFO - kappa               : 0.0513
+2025-06-13 17:31:58 - INFO - brier               : 0.1565
+2025-06-13 17:31:58 - INFO - f1                  : 0.6171
+2025-06-13 17:31:58 - INFO - f1_macro            : 0.4702
+2025-06-13 17:31:58 - INFO - f1_weighted         : 0.5592
+2025-06-13 17:31:58 - INFO - 'conf_matrix': [[16 11]
+ [56 54]]
+2025-06-13 17:31:58 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:31:58 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:31:58 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:32:37 - INFO - Best threshold: 0.79  bal_acc=0.674
+2025-06-13 17:32:37 - INFO - === FINAL TEST RESULTS (thr=0.79) ===
+2025-06-13 17:32:37 - INFO - accuracy            : 0.5839
+2025-06-13 17:32:37 - INFO - balanced_accuracy   : 0.5593
+2025-06-13 17:32:37 - INFO - roc_auc             : 0.5579
+2025-06-13 17:32:37 - INFO - precision           : 0.8354
+2025-06-13 17:32:37 - INFO - recall              : 0.6000
+2025-06-13 17:32:37 - INFO - mcc                 : 0.0954
+2025-06-13 17:32:37 - INFO - kappa               : 0.0827
+2025-06-13 17:32:37 - INFO - brier               : 0.1575
+2025-06-13 17:32:37 - INFO - f1                  : 0.6984
+2025-06-13 17:32:37 - INFO - f1_macro            : 0.5139
+2025-06-13 17:32:37 - INFO - f1_weighted         : 0.6257
+2025-06-13 17:32:37 - INFO - 'conf_matrix': [[14 13]
+ [44 66]]
+2025-06-13 17:32:37 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:32:37 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:32:37 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png
+2025-06-13 17:33:27 - INFO - Best threshold: 0.78  bal_acc=0.674
+2025-06-13 17:33:27 - INFO - === FINAL TEST RESULTS (thr=0.78) ===
+2025-06-13 17:33:27 - INFO - accuracy            : 0.5912
+2025-06-13 17:33:27 - INFO - balanced_accuracy   : 0.5079
+2025-06-13 17:33:27 - INFO - roc_auc             : 0.4677
+2025-06-13 17:33:27 - INFO - precision           : 0.8068
+2025-06-13 17:33:27 - INFO - recall              : 0.6455
+2025-06-13 17:33:27 - INFO - mcc                 : 0.0131
+2025-06-13 17:33:27 - INFO - kappa               : 0.0121
+2025-06-13 17:33:27 - INFO - brier               : 0.1616
+2025-06-13 17:33:27 - INFO - f1                  : 0.7172
+2025-06-13 17:33:27 - INFO - f1_macro            : 0.4902
+2025-06-13 17:33:27 - INFO - f1_weighted         : 0.6277
+2025-06-13 17:33:27 - INFO - 'conf_matrix': [[10 17]
+ [39 71]]
+2025-06-13 17:33:27 - INFO - Saved state to /home/phd2/Scrivania/CorsoRepo/Bambino/_04_test/best_models/rocket_model.joblib
+2025-06-13 17:33:28 - INFO - Saved confusion matrix to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/cm_rocket.png
+2025-06-13 17:33:28 - INFO - Saved ROC curve to /home/phd2/Scrivania/CorsoRepo/Bambino/_03_train/test_results_after_training/roc_rocket.png

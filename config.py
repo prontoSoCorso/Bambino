@@ -53,7 +53,16 @@ class Config_03_train:
 
 
     # ROCKET Hyperparameters
-    rocket_kernels = 20000
+    rocket_kernels_list = [2500, 5000, 10000, 15000, 20000, 25000, 30000]
+    modality_combinations = [
+        ['g'],
+        ['h'],
+        ['f'],
+        ['g','h'],
+        ['g','f'],
+        ['h','f'],
+        ['g','h','f']
+    ]
 
     classifier = "RF"           # RF / LR / XGB
     rf_n_estimators=300

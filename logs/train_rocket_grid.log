@@ -1,0 +1,63 @@
+2025-06-13 17:55:43 - INFO -     → best mcc=0.1865 at thr=0.85
+2025-06-13 17:55:45 - INFO -     → best mcc=0.2365 at thr=0.82
+2025-06-13 17:55:47 - INFO -     → best mcc=0.2030 at thr=0.81
+2025-06-13 17:55:51 - INFO -     → best mcc=0.2062 at thr=0.81
+2025-06-13 17:55:57 - INFO -     → best mcc=0.2500 at thr=0.85
+2025-06-13 17:56:03 - INFO -     → best mcc=0.2010 at thr=0.80
+2025-06-13 17:56:11 - INFO -     → best mcc=0.2171 at thr=0.83
+2025-06-13 17:56:12 - INFO -     → best mcc=0.1715 at thr=0.83
+2025-06-13 17:56:14 - INFO -     → best mcc=0.2035 at thr=0.77
+2025-06-13 17:56:17 - INFO -     → best mcc=0.2236 at thr=0.82
+2025-06-13 17:56:22 - INFO -     → best mcc=0.2089 at thr=0.78
+2025-06-13 17:56:27 - INFO -     → best mcc=0.1732 at thr=0.86
+2025-06-13 17:56:34 - INFO -     → best mcc=0.2070 at thr=0.76
+2025-06-13 17:56:43 - INFO -     → best mcc=0.2356 at thr=0.77
+2025-06-13 17:56:44 - INFO -     → best mcc=0.3304 at thr=0.75
+2025-06-13 17:56:46 - INFO -     → best mcc=0.3264 at thr=0.75
+2025-06-13 17:56:49 - INFO -     → best mcc=0.2190 at thr=0.73
+2025-06-13 17:56:54 - INFO -     → best mcc=0.2998 at thr=0.76
+2025-06-13 17:56:59 - INFO -     → best mcc=0.2748 at thr=0.73
+2025-06-13 17:57:06 - INFO -     → best mcc=0.2616 at thr=0.69
+2025-06-13 17:57:14 - INFO -     → best mcc=0.2291 at thr=0.75
+2025-06-13 17:57:16 - INFO -     → best mcc=0.2310 at thr=0.83
+2025-06-13 17:57:18 - INFO -     → best mcc=0.2115 at thr=0.84
+2025-06-13 17:57:21 - INFO -     → best mcc=0.2260 at thr=0.82
+2025-06-13 17:57:25 - INFO -     → best mcc=0.3003 at thr=0.80
+2025-06-13 17:57:31 - INFO -     → best mcc=0.2641 at thr=0.78
+2025-06-13 17:57:38 - INFO -     → best mcc=0.2433 at thr=0.79
+2025-06-13 17:57:46 - INFO -     → best mcc=0.1804 at thr=0.78
+2025-06-13 17:57:47 - INFO -     → best mcc=0.1929 at thr=0.80
+2025-06-13 17:57:49 - INFO -     → best mcc=0.2616 at thr=0.83
+2025-06-13 17:57:52 - INFO -     → best mcc=0.3046 at thr=0.74
+2025-06-13 17:57:57 - INFO -     → best mcc=0.2724 at thr=0.78
+2025-06-13 17:58:02 - INFO -     → best mcc=0.2215 at thr=0.80
+2025-06-13 17:58:09 - INFO -     → best mcc=0.2809 at thr=0.78
+2025-06-13 17:58:18 - INFO -     → best mcc=0.2809 at thr=0.79
+2025-06-13 17:58:19 - INFO -     → best mcc=0.3078 at thr=0.75
+2025-06-13 17:58:21 - INFO -     → best mcc=0.2415 at thr=0.84
+2025-06-13 17:58:24 - INFO -     → best mcc=0.2559 at thr=0.78
+2025-06-13 17:58:29 - INFO -     → best mcc=0.3182 at thr=0.81
+2025-06-13 17:58:34 - INFO -     → best mcc=0.3248 at thr=0.79
+2025-06-13 17:58:41 - INFO -     → best mcc=0.2778 at thr=0.76
+2025-06-13 17:58:50 - INFO -     → best mcc=0.2755 at thr=0.81
+2025-06-13 17:58:51 - INFO -     → best mcc=0.2609 at thr=0.82
+2025-06-13 17:58:53 - INFO -     → best mcc=0.3113 at thr=0.75
+2025-06-13 17:58:56 - INFO -     → best mcc=0.2953 at thr=0.81
+2025-06-13 17:59:01 - INFO -     → best mcc=0.2894 at thr=0.78
+2025-06-13 17:59:07 - INFO -     → best mcc=0.2809 at thr=0.79
+2025-06-13 17:59:14 - INFO -     → best mcc=0.2494 at thr=0.83
+2025-06-13 17:59:22 - INFO -     → best mcc=0.2356 at thr=0.84
+2025-06-13 17:59:22 - INFO - === FINAL TEST RESULTS (thr=0.75) ===
+2025-06-13 17:59:22 - INFO - accuracy            : 0.6934
+2025-06-13 17:59:22 - INFO - balanced_accuracy   : 0.5576
+2025-06-13 17:59:22 - INFO - roc_auc             : 0.5438
+2025-06-13 17:59:22 - INFO - precision           : 0.8269
+2025-06-13 17:59:22 - INFO - recall              : 0.7818
+2025-06-13 17:59:22 - INFO - mcc                 : 0.1071
+2025-06-13 17:59:22 - INFO - kappa               : 0.1062
+2025-06-13 17:59:22 - INFO - brier               : 0.1579
+2025-06-13 17:59:22 - INFO - f1                  : 0.8037
+2025-06-13 17:59:22 - INFO - f1_macro            : 0.5519
+2025-06-13 17:59:22 - INFO - f1_weighted         : 0.7045
+2025-06-13 17:59:22 - INFO - 'conf_matrix': [[ 9 18]
+ [24 86]]

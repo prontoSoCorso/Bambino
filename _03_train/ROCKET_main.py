@@ -1,11 +1,8 @@
 import os
 import sys
-import time
 import logging
 import numpy as np
-import pandas as pd
 import joblib
-from tqdm import tqdm
 from sklearn.metrics import balanced_accuracy_score
 from sktime.transformations.panel.rocket import Rocket
 from sklearn.linear_model import LogisticRegression
@@ -80,12 +77,13 @@ def main():
 
     # ─── Load datasets ──────────────────────────────────────────────────
     print("\n📂 Loading datasets...")
+    selected_modalities = list(conf.modality_dims.keys())
     datasets = {}
     for split, path in [("train", utils.train_path),
                         ("val",   utils.validation_path),
                         ("test",  utils.test_path)]:
         print(f"Loading {split} set from {path}")
-        datasets[split] = BoaOpenFaceDataset.load_dataset(path)
+        datasets[split] = BoaOpenFaceDataset.load_dataset(path, modalities=selected_modalities)
     train_ds = datasets["train"]
     val_ds   = datasets["val"]
     test_ds  = datasets["test"]
@@ -112,13 +110,30 @@ def main():
     if do_analysis: dataset_utils.analyze_data_quality(datasets)
 
     # ─── Convert Dataset objects to NumPy arrays ──────────────────────
-    def ds_to_numpy(ds):
+    def ds_to_numpy(ds, modalities):
+        """
+        Converte un BoaOpenFaceDataset in array NumPy [N, C, L] e y [N]
+        solo sulle modalità selezionate.
+        
+        selected_modalities: lista, es. ['g','f','h']
+        """
+        # mappa i codici di modalità all'attributo dell'istanza
+        modality_map = {
+            'g': 'gaze_info',   # shape [L, G]
+            'h': 'head_info',   # shape [L, H]
+            'f': 'face_info'    # shape [L, F]
+            # aggiungi altre modalità se necessario
+        }
         X_list, y_list = [], []
         for inst in ds.instances:
-            g = inst.gaze_info     # shape [L, G]
-            h = inst.head_info     # shape [L, H]
-            f = inst.face_info     # shape [L, F]
-            X = np.concatenate([g, h, f], axis=1)  # shape [L, G+H+F]
+            mats = []
+            for m in modalities:
+                attr = modality_map.get(m)
+                if attr is None:
+                    raise ValueError(f"Modalità '{m}' non riconosciuta")
+                mat = getattr(inst, attr)  # shape [L, D_m]
+                mats.append(mat)
+            X = np.concatenate(mats, axis=1)  # shape [L, G+H+F]
             X_list.append(X.T)     # convert to [C, L]
             y_list.append(inst.trial_type)
         X_arr = np.stack(X_list, axis=0)  # [N, C, L]
@@ -126,9 +141,11 @@ def main():
         return X_arr, y_arr
 
     print("\n🔄 Converting datasets to NumPy arrays...")
-    X_train, y_train = ds_to_numpy(train_ds)
-    X_val,   y_val   = ds_to_numpy(val_ds)
-    X_test,  y_test  = ds_to_numpy(test_ds)
+    print(f"selected modalities: {' & '.join(selected_modalities)}")
+    print(f"{'='*60}")
+    X_train, y_train = ds_to_numpy(train_ds, selected_modalities)
+    X_val,   y_val   = ds_to_numpy(val_ds,   selected_modalities)
+    X_test,  y_test  = ds_to_numpy(test_ds,  selected_modalities)
 
     # ─── ROCKET transform ─────────────────────────────────────────────
     print("\n🔄 Fitting and transforming features with ROCKET...")
