@@ -88,7 +88,7 @@ def ds_to_numpy(ds, modalities):
     return np.stack(X_list, axis=0), np.array(y_list)
 
 
-def main():
+def main(dataset_type):
     # ─── Logging & dirs ────────────────────────────────────────────────
     models_utils.config_logging(log_dir="logs", log_filename="train_rocket_grid.log")
     os.makedirs(conf.output_model_base_dir, exist_ok=True)
@@ -105,9 +105,9 @@ def main():
 
     datasets = {}
     modalities = list(conf.modality_dims.keys())
-    for split, path in [("train", utils.train_path),
-                        ("val",   utils.validation_path),
-                        ("test",  utils.test_path)]:
+    for split, path in [("train", utils.get_dataset_path(dataset_type, utils.train_filename)),
+                        ("val",   utils.get_dataset_path(dataset_type, utils.validation_filename)),
+                        ("test",  utils.get_dataset_path(dataset_type, utils.test_filename))]:
         datasets[split] = BoaOpenFaceDataset.load_dataset(path, modalities=modalities)
     train_ds, val_ds, test_ds = datasets["train"], datasets["val"], datasets["test"]
 
@@ -121,16 +121,16 @@ def main():
         'train': ds_to_numpy(train_ds, modalities=modalities),
         'val':   ds_to_numpy(val_ds,   modalities=modalities),
         'test':  ds_to_numpy(test_ds,  modalities=modalities)
-    }
+        }
 
     best_overall = {
-        'mcc':    -1.0,
+        'mcc':    0,
         'modalities': None,
         'n_kernels': None,
         'threshold': None,
         'rocket': None,
         'clf': None
-    }
+        }
 
     # ─── Grid Search ───────────────────────────────────────────────────
     for mods, n_kern in itertools.product(modalities_grid, kernels_grid):
@@ -151,8 +151,8 @@ def main():
         clf.fit(X_train_feat, y_train)
 
         # threshold by MCC
-        thr, mcc = find_best_threshold_mcc(clf, X_val_feat, y_val, thresholds=np.linspace(0,1,101))
-        if mcc > best_overall['mcc']:
+        thr, mcc = find_best_threshold_mcc(clf, X_val_feat, y_val, thresholds=np.linspace(0,0.8,101))
+        if abs(mcc) > abs(best_overall['mcc']):
             best_overall.update({
                 'mcc': mcc,
                 'modalities': mods,
@@ -216,4 +216,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(dataset_type=conf.dataset_type)

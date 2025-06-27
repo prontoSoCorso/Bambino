@@ -3,7 +3,6 @@ Utility script for analyzing Optuna optimization results
 """
 
 import optuna
-import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path

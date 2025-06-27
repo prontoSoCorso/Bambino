@@ -133,7 +133,7 @@ class BoaOpenFaceDataset(OpenFaceDataset):
 # Main
 if __name__ == "__main__":
     utils.seed_everything(utils.seed)
-    test_set = OpenFaceDataset.load_dataset(utils.validation_path)
+    test_set = OpenFaceDataset.load_dataset(utils.validation_filename)
     test_set.compute_statistics()
     print("Done BOA statistics.")
 

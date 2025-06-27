@@ -11,17 +11,23 @@ PROJECT_ROOT = os.path.dirname(current_file_path)
 while os.path.basename(PROJECT_ROOT) != "Bambino":
     PROJECT_ROOT = os.path.dirname(PROJECT_ROOT)
 
+# Supported dataset subfolders
+DATASET_SUBDIRS = {
+    'raw': 'raw',
+    'preprocessed': 'preprocessed',
+    'normalized': 'normalized'
+}
+
 class utils:
+    # General settings
     num_classes     = 2
     seed            = 2025
     device          = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     multi_gpu       = torch.cuda.device_count() > 1  # Variabile per controllare l'uso di più GPU
-    
-    base_data_path  = os.path.join(PROJECT_ROOT, "data", "boa")
-    train_path      = os.path.join(base_data_path, "training_set.pt")
-    validation_path = os.path.join(base_data_path, "validation_set.pt")
-    test_path       = os.path.join(base_data_path, "test_set.pt")
 
+    # Base folder under PROJECT_ROOT/data
+    DATASETS_ROOT = os.path.join(PROJECT_ROOT, 'data')
+    
     @staticmethod
     def seed_everything(seed):
         random.seed(seed)
@@ -33,16 +39,57 @@ class utils:
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
 
+    train_filename      = "training_set.pt"
+    validation_filename = "validation_set.pt"
+    test_filename       = "test_set.pt"
+
+    @staticmethod
+    def get_dataset_path(dataset_type: str, filename: str = None) -> str:
+        """
+        Return the path to the desired dataset subfolder or file.
+
+        Args:
+            dataset_type: one of 'raw', 'preprocessed', or 'normalized'
+            filename: optional filename (e.g. 'training_set.pt')
+
+        Returns:
+            Full path to the subfolder or file.
+
+        Raises:
+            KeyError: if dataset_type is not recognized.
+        """
+        try:
+            subdir = DATASET_SUBDIRS[dataset_type]
+        except KeyError:
+            raise KeyError(f"Unknown dataset_type '{dataset_type}'. "
+                           f"Choose from {list(DATASET_SUBDIRS.keys())}")
+
+        base_path = os.path.join(utils.DATASETS_ROOT, subdir)
+        if filename:
+            return os.path.join(base_path, filename)
+        return base_path
+
+    
+
+class Config_01_preprocessing:
+    input_dataset_type = "raw"
+    output_dataset_type = "preprocessed"
+
+class Config_02_normalization:
+    input_dataset_type = "preprocessed"
+    output_dataset_type = "normalized"
+
 
 class Config_03_train:
     output_model_base_dir = os.path.join(PROJECT_ROOT, "_04_test", "best_models")
     output_dir_plots = os.path.join(PROJECT_ROOT, "_03_train", "test_results_after_training")
+    dataset_type = "normalized"        # raw, preprocessed, normalized
     save_plots = True
     modality_dims = {
         "g": 8,
         "h": 13,
         "f": 17
-        }   
+        }
     """
     All features: 
     "g": 8,
@@ -55,14 +102,18 @@ class Config_03_train:
     # ROCKET Hyperparameters
     rocket_kernels_list = [2500, 5000, 10000, 15000, 20000, 25000, 30000]
     modality_combinations = [
+        ['g','h','f']
+    ]
+
+    """
+    
         ['g'],
         ['h'],
         ['f'],
         ['g','h'],
         ['g','f'],
         ['h','f'],
-        ['g','h','f']
-    ]
+    """
 
     classifier = "RF"           # RF / LR / XGB
     rf_n_estimators=300
@@ -121,7 +172,7 @@ class Config_03_train_with_optimization(Config_03_train):
     
     # Optuna optimization control
     optimize_with_optuna = True
-    optuna_n_trials_LSTMFCN = 23  # Number of optimization trials
+    optuna_n_trials_LSTMFCN = 150  # Number of optimization trials
     
     # LSTM-FCN search space for Optuna
     @staticmethod

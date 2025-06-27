@@ -63,8 +63,7 @@ def find_best_threshold(model, X_val_feat, y_val, thresholds=np.linspace(0, 1, 1
     return best_thr
 
 
-def main():
-    do_analysis = False
+def main(do_analysis=False, dataset_type="raw"):
 
     # ─── Logging & directories ─────────────────────────────────────────
     models_utils.config_logging(log_dir="logs", log_filename="train_rocket.log")
@@ -79,9 +78,9 @@ def main():
     print("\n📂 Loading datasets...")
     selected_modalities = list(conf.modality_dims.keys())
     datasets = {}
-    for split, path in [("train", utils.train_path),
-                        ("val",   utils.validation_path),
-                        ("test",  utils.test_path)]:
+    for split, path in [("train", utils.get_dataset_path(dataset_type, utils.train_filename)),
+                        ("val",   utils.get_dataset_path(dataset_type, utils.validation_filename)),
+                        ("test",  utils.get_dataset_path(dataset_type, utils.test_filename))]:
         print(f"Loading {split} set from {path}")
         datasets[split] = BoaOpenFaceDataset.load_dataset(path, modalities=selected_modalities)
     train_ds = datasets["train"]
@@ -219,4 +218,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(do_analysis=False, 
+         dataset_type=conf.dataset_type)

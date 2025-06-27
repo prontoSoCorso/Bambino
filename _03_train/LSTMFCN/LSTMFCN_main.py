@@ -25,7 +25,7 @@ from _03_train.LSTMFCN import LSTMFCN_train_and_eval, LSTMFCN_model
 
 device = utils.device
 
-def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True,
+def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True, dataset_type=conf.dataset_type,
                  save_plots=conf.save_plots,
                  output_dir_plots=conf.output_dir_plots,
                  output_model_base_dir=conf.output_model_base_dir,
@@ -75,10 +75,17 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True,
         print("\n📂 Loading datasets...")
     datasets = {}
     selected_modalities = list(conf.modality_dims.keys())
-    for split, path in [("train", utils.train_path), ("val", utils.validation_path), ("test", utils.test_path)]:
-        print(f"Loading {split} set from {path} with modalities {selected_modalities}")
-        datasets[split] = BoaOpenFaceDataset.load_dataset(path, modalities=selected_modalities)
-    
+    if default_path:
+        for split, path in [("train", utils.get_dataset_path(dataset_type, utils.train_filename)),
+                            ("val",   utils.get_dataset_path(dataset_type, utils.validation_filename)),
+                            ("test",  utils.get_dataset_path(dataset_type, utils.test_filename))]:
+            print(f"Loading {split} set from {path} with modalities {selected_modalities}")
+            datasets[split] = BoaOpenFaceDataset.load_dataset(path, modalities=selected_modalities)
+    else:
+        print(f"Loading subsets from user-specified path with modalities {selected_modalities}")
+        datasets["train"] = BoaOpenFaceDataset.load_dataset(train_path, modalities=selected_modalities)
+        datasets["val"] = BoaOpenFaceDataset.load_dataset(val_path, modalities=selected_modalities)
+        datasets["test"] = BoaOpenFaceDataset.load_dataset(test_path, modalities=selected_modalities)
     train_ds, val_ds, test_ds = datasets["train"], datasets["val"], datasets["test"]
     
     # Compute statistics
@@ -92,6 +99,7 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True,
     if not optimization_mode:
         dataset_utils.analyze_data_quality(datasets)
 
+    """
     # ─────────────── NORMALIZATION STEP ───────────────
     # Compute per‐feature mean/std on the TRAIN set, then apply to all splits
     if not optimization_mode:
@@ -103,6 +111,7 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True,
     for split in ("train", "val", "test"):
         dataset_utils.apply_normalization(datasets[split], norm_params)
     # ────────────────────────────────────────────────────
+    """
     
     # Verify normalization effects (only in normal mode)
     if not optimization_mode:
@@ -217,7 +226,7 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True,
     checkpoint = torch.load(best_model_path, map_location=device, weights_only=False)
     model.load_state_dict(checkpoint['model_state_dict'])
     print("\n🔎 Finding best threshold on validation set (post‐training)...")
-    best_thr = LSTMFCN_train_and_eval.find_best_threshold(model, val_loader, thresholds=np.linspace(0, 1, 101))
+    best_thr = LSTMFCN_train_and_eval.find_best_threshold(model, val_loader, thresholds=np.linspace(0, 0.75, 101))
     model.best_threshold = best_thr
     print(f"🔖 Selected best_threshold = {best_thr:.2f}\n")
     checkpoint['best_threshold'] = best_thr

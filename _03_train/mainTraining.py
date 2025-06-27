@@ -29,7 +29,7 @@ The goal of a study is to find out the optimal set of hyperparameter values thro
 def create_study(model_name):
     study_dir = Path(__file__).resolve().parent / "optuna_studies"
     study_dir.mkdir(parents=True, exist_ok=True)
-    db_path = study_dir / f"{model_name}.db"
+    db_path = study_dir / f"{model_name}_norm.db"
     storage_name = f"sqlite:///{db_path}"
     
     print(f"📊 Study storage: {storage_name}")
