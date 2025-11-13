@@ -12,7 +12,7 @@ while project_root.name != "Bambino":
 sys.path.append(str(project_root))
 
 # Imports
-from config import utils
+from config import settings
 from DataUtils.OpenFaceDataset import OpenFaceDataset
 from DataUtils.BoaOpenFaceDataset import BoaOpenFaceDataset
 from _utils_ import plot_utils
@@ -37,7 +37,7 @@ def load_datasets(keys, data_type):
     """Carica i BoaOpenFaceDataset indicati in keys e setta il .dataset_name."""
     datasets = []
     for key in keys:
-        path  = utils.get_dataset_path(data_type, getattr(utils, f"{key}_filename"))
+        path  = settings.get_dataset_path(data_type, getattr(settings, f"{key}_filename"))
         ds = BoaOpenFaceDataset.load_dataset(path)
         ds.dataset_name = key
         datasets.append(ds)

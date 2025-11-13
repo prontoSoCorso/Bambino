@@ -1,4 +1,6 @@
 import torch
+import pandas as pd
+import numpy as np
 
 # ────────────────────────────────────────────────────────────────────────────────
 # Dataset analysis: NaN check, number of instances, modalities
@@ -138,3 +140,73 @@ def apply_normalization(dataset, norm_params):
                 setattr(inst, attr, normed.numpy())
             else:
                 setattr(inst, attr, normed)
+
+
+# Utility: convert a BoaOpenFaceDataset into a metadata DataFrame + labels
+# We'll extract simple per-trial metadata which are fast to compute and useful
+# for a baseline: age, sex, audio group, speaker, trial_id, duration, plus
+# simple aggregated stats from gaze/head/face sequences if available.
+
+def dataset_to_metadata_df(ds):
+    rows = []
+    for inst in ds.instances:
+        # Basic identifiers & label
+        pt_id = inst.pt_id
+        trial_id = inst.trial_id
+        label = int(inst.trial_type)  # 0/1 like in your OpenFaceDataset
+
+        # Demographics / metadata (some may be None)
+        age = float(inst.age) if inst.age is not None else np.nan
+        sex = inst.sex if inst.sex is not None else np.nan  # already mapped if dataset loaded via OpenFaceDataset
+        audio = inst.audio if hasattr(inst, "audio") else None
+        speaker = inst.speaker if hasattr(inst, "speaker") else None
+
+        # Duration in seconds (use frame_rate from class if available)
+        try:
+            fr = ds.FRAME_RATE
+        except Exception:
+            fr = 25
+        duration_s = inst.face_info.shape[0] / fr if hasattr(inst, "face_info") else np.nan
+
+        # Simple aggregated features from time series (mean, std)
+        # Safe checks for attributes
+        def agg_if(attr_name, idxs=None):
+            if hasattr(inst, attr_name):
+                arr = getattr(inst, attr_name)
+                if arr is None or len(arr) == 0:
+                    return (np.nan, np.nan)
+                a = np.asarray(arr)
+                if a.ndim == 1:
+                    mean = np.nanmean(a)
+                    std = np.nanstd(a)
+                else:
+                    # take mean over time then across dims
+                    mean = np.nanmean(a, axis=0).ravel()
+                    std = np.nanstd(a, axis=0).ravel()
+                    mean = float(np.nanmean(mean))
+                    std = float(np.nanmean(std))
+                return (mean, std)
+            return (np.nan, np.nan)
+
+        gaze_mean, gaze_std = agg_if("gaze_info")
+        head_mean, head_std = agg_if("head_info")
+        face_mean, face_std = agg_if("face_info")
+
+        rows.append({
+            "pt_id": pt_id,
+            "trial_id": trial_id,
+            "label": label,
+            "age": age,
+            "sex": sex,
+            "audio": audio,
+            "speaker": speaker,
+            "duration_s": duration_s,
+            "gaze_mean": gaze_mean,
+            "gaze_std": gaze_std,
+            "head_mean": head_mean,
+            "head_std": head_std,
+            "face_mean": face_mean,
+            "face_std": face_std,
+        })
+    df = pd.DataFrame(rows)
+    return df

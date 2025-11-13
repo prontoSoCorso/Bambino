@@ -14,7 +14,7 @@ while not os.path.basename(parent_dir) == "Bambino":
     parent_dir = os.path.dirname(parent_dir)
 sys.path.append(parent_dir)
 
-from config import utils
+from config import settings
 from DataUtils.OpenFaceInstance import OpenFaceInstance
 
 # Class
@@ -41,7 +41,7 @@ class OpenFaceDataset(Dataset):
         """
         super().__init__()
         # seed / reproducibility
-        utils.seed_everything(utils.seed)
+        settings.seed_everything(settings.seed)
         
         # paths
         self.dataset_name = dataset_name

@@ -1,8 +1,7 @@
 import numpy as np
 import torch
 import torch.nn as nn
-import warnings, math
-
+import math
 
 class MultiHeadAttention(nn.Module):
     """Lightweight attention mechanism for feature fusion"""

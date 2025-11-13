@@ -4,7 +4,6 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.amp import autocast, GradScaler
 from tqdm import tqdm, trange
-from collections import defaultdict
 from sklearn.metrics import balanced_accuracy_score
 import time, os, sys
 import numpy as np

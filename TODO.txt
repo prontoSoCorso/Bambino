@@ -1,0 +1,16 @@
+1. Baseline: raw features + logistic regression (per-trial means, stds over time).  !!
+
+2. MiniROCKET → LightGBM (+ metadata) — report balanced accuracy, per-baby F1.      !!
+
+3. TS2Vec (pretrain on all sequences) → pooled embeddings → LightGBM (+ metadata).  !!
+
+4. Lightweight 1DConv + FiLM conditioning on metadata → MLP head.                   !!
+
+5. TFT (if 2–4 still fail) — long shot if you have enough examples per class
+
+
+
+
+
+
+

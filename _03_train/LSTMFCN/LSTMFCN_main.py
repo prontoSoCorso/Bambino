@@ -5,7 +5,6 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 import warnings
-import optuna
 warnings.filterwarnings('ignore')
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
@@ -17,17 +16,18 @@ while not os.path.basename(parent_dir) == "Bambino":
     parent_dir = os.path.dirname(parent_dir)
 sys.path.append(parent_dir)
 
-from config import Config_03_train as conf, Config_03_train_with_optimization as opt_conf, utils
+from config_lstmfcn import lstmfcn_config as conf, lstmfcn_config_with_optimization as opt_conf
+from config import settings
 from DataUtils.OpenFaceDataset import OpenFaceDataset
 from DataUtils.BoaOpenFaceDataset import BoaOpenFaceDataset
 from _utils_ import dataset_utils, models_utils, plot_utils
 from _03_train.LSTMFCN import LSTMFCN_train_and_eval, LSTMFCN_model
 
-device = utils.device
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True, dataset_type=conf.dataset_type,
                  save_plots=conf.save_plots,
-                 output_dir_plots=conf.output_dir_plots,
+                 output_dir_results=conf.output_dir_results,
                  output_model_base_dir=conf.output_model_base_dir,
                  trial=None,
                  run_test_evaluation=getattr(opt_conf, 'run_test_evaluation', False),
@@ -64,8 +64,8 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True, da
     if not optimization_mode:
         models_utils.config_logging(log_dir="logs", log_filename="train_lstmfcn.log")
         os.makedirs(output_model_base_dir, exist_ok=True)
-        os.makedirs(output_dir_plots, exist_ok=True)
-        
+        os.makedirs(output_dir_results, exist_ok=True)
+
         print("=" * 60)
         print("🔧 Initializing LSTM-FCN Training Pipeline")
         print("=" * 60)
@@ -76,9 +76,9 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True, da
     datasets = {}
     selected_modalities = list(conf.modality_dims.keys())
     if default_path:
-        for split, path in [("train", utils.get_dataset_path(dataset_type, utils.train_filename)),
-                            ("val",   utils.get_dataset_path(dataset_type, utils.validation_filename)),
-                            ("test",  utils.get_dataset_path(dataset_type, utils.test_filename))]:
+        for split, path in [("train", settings.get_dataset_path(dataset_type, settings.train_filename)),
+                            ("val",   settings.get_dataset_path(dataset_type, settings.validation_filename)),
+                            ("test",  settings.get_dataset_path(dataset_type, settings.test_filename))]:
             print(f"Loading {split} set from {path} with modalities {selected_modalities}")
             datasets[split] = BoaOpenFaceDataset.load_dataset(path, modalities=selected_modalities)
     else:
@@ -98,30 +98,11 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True, da
     # Data quality analysis (not in optimization mode)
     if not optimization_mode:
         dataset_utils.analyze_data_quality(datasets)
-
-    """
-    # ─────────────── NORMALIZATION STEP ───────────────
-    # Compute per‐feature mean/std on the TRAIN set, then apply to all splits
-    if not optimization_mode:
-        print("\n🔄 Computing normalization parameters on TRAIN set...")
-    norm_params = dataset_utils.compute_normalization_params(datasets["train"])
-
-    if not optimization_mode:
-        print("🔄 Applying normalization to all splits (train/val/test)...")
-    for split in ("train", "val", "test"):
-        dataset_utils.apply_normalization(datasets[split], norm_params)
-    # ────────────────────────────────────────────────────
-    """
-    
-    # Verify normalization effects (only in normal mode)
-    if not optimization_mode:
-        print("\n📊 Post-normalization statistics:")
-        dataset_utils.analyze_data_quality(datasets)
     
     # Create balanced sampler
     if not optimization_mode:
         print("\n⚖️ Creating balanced sampler...")
-    train_sampler = models_utils.get_balanced_sampler(train_ds, utils.num_classes)
+    train_sampler = models_utils.get_balanced_sampler(train_ds, settings.num_classes)
 
     # Data loaders
     if not optimization_mode:
@@ -173,7 +154,7 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True, da
         print(f"🎯 Trainable parameters: {trainable_params:,}")
     
     # Multi-GPU support
-    if utils.multi_gpu:
+    if settings.multi_gpu:
         model = nn.DataParallel(model)
 
     # Training + Validation
@@ -215,9 +196,10 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True, da
         best_val_score = max([epoch_data.get('val_mcc', 0) for epoch_data in train_history])
         return best_val_score
 
-    # ─── PLOT TRAINING HISTORY ─────────────────────────────────────────
-    plot_save_path = os.path.join(conf.output_dir_plots, "training_history.png")
-    os.makedirs(conf.output_dir_plots, exist_ok=True)
+    # ─── PLOT TRAINING HISTORY ────────────────────────────────
+    # Output plot dir is this dir plus output_dir_results
+    plot_save_path = os.path.join(conf.output_dir_results, "lstmfcn_training_history.png")
+    os.makedirs(conf.output_dir_results, exist_ok=True)
     plot_utils.plot_training_history(train_history, save_path=plot_save_path, figsize=(16, 10), dpi=150)
     print(f"✅ Saved training‐history figure to: {plot_save_path}")
     # ───────────────────────────────────────────────────────────────────
@@ -254,23 +236,23 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True, da
 
         # 7) Plots (ROC + conf mat)
         if save_plots:
-            os.makedirs(conf.output_dir_plots, exist_ok=True)
+            os.makedirs(conf.output_dir_results, exist_ok=True)
             plot_utils.save_confusion_matrix(
                 test_metrics['conf_matrix'],
-                os.path.join(conf.output_dir_plots, "cm_lstmfcn.png"),
+                os.path.join(conf.output_dir_results, "cm_lstmfcn.png"),
                 f"LSTM-FCN)")
             
             plot_utils.plot_roc_curve(
                 test_metrics['fpr'], 
                 test_metrics['tpr'],
                 test_metrics['roc_auc'],
-                os.path.join(conf.output_dir_plots,"roc_lstmfcn.png"))
+                os.path.join(conf.output_dir_results, "roc_lstmfcn.png"))
         
     print(f"✅ Training completed successfully!")
     print(f"📁 Model saved to: {conf.output_model_base_dir}")
-    print(f"📊 Plots saved to: {conf.output_dir_plots}")
+    print(f"📊 Plots saved to: {conf.output_dir_results}")
 
 
 if __name__ == "__main__":
-    utils.seed_everything(utils.seed)
+    settings.seed_everything(settings.seed)
     lstmfcn_main()

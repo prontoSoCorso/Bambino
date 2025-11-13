@@ -24,7 +24,7 @@ class OpenFaceInstance:
 
     def __init__(self, trial_data: pd.DataFrame):
         arr = trial_data.to_numpy()
-        # column indices (you may want to double-check these against your CSV!)
+        # column indices
         pt_ind, sex_ind, age_ind, trial_ind, trl_type_ind = 0, 1, 3, 4, 5
         # audio & speaker
         raw_audio = arr[0, 6]

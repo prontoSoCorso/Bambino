@@ -13,7 +13,7 @@ while not os.path.basename(parent_dir) == "Bambino":
     parent_dir = os.path.dirname(parent_dir)
 sys.path.append(parent_dir)
 
-from config import Config_03_train_with_optimization as conf, utils
+from config import Config_03_train_with_optimization as conf, settings
 from LSTMFCN.LSTMFCN_main import lstmfcn_main
 from DataUtils.OpenFaceDataset import OpenFaceDataset
 from DataUtils.BoaOpenFaceDataset import BoaOpenFaceDataset
@@ -49,7 +49,7 @@ def create_study(model_name):
         storage=storage_name,
         load_if_exists=True,
         pruner=pruner,
-        sampler=optuna.samplers.TPESampler(seed=utils.seed)
+        sampler=optuna.samplers.TPESampler(seed=settings.seed)
     )
 
 def optimize_lstmfcn():
@@ -120,7 +120,7 @@ def main(models_to_train=["LSTMFCN"],
     
     print(f"🎯 Models to train: {models_to_train}")
     print(f"🔧 Optimization mode: {'ON' if optimize else 'OFF'}")
-    print(f"🌱 Random seed: {utils.seed}")
+    print(f"🌱 Random seed: {settings.seed}")
     
     for model in models_to_train:
         model_start_time = time.time()
@@ -175,7 +175,7 @@ def main(models_to_train=["LSTMFCN"],
 
 if __name__ == "__main__":
     # Set random seed for reproducibility
-    utils.seed_everything(utils.seed)
+    settings.seed_everything(settings.seed)
     
     # Run main training pipeline
     main()

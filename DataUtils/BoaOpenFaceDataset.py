@@ -8,7 +8,7 @@ while not os.path.basename(parent_dir) == "Bambino":
     parent_dir = os.path.dirname(parent_dir)
 sys.path.append(parent_dir)
 
-from config import utils
+from config import settings
 from DataUtils.OpenFaceDataset import OpenFaceDataset
 from DataUtils.OpenFaceInstance import OpenFaceInstance
 
@@ -66,7 +66,7 @@ class BoaOpenFaceDataset(OpenFaceDataset):
         else:
             ds.audio_groups = list(np.unique([inst.audio for inst in ds.instances]))
         return ds
-    
+        
     def compute_statistics(self, recalc_stats: bool = False):
         # set trial_id_stats if needed
         if self.trial_id_stats is None or recalc_stats:
@@ -132,8 +132,8 @@ class BoaOpenFaceDataset(OpenFaceDataset):
 
 # Main
 if __name__ == "__main__":
-    utils.seed_everything(utils.seed)
-    test_set = OpenFaceDataset.load_dataset(utils.validation_filename)
+    settings.seed_everything(settings.seed)
+    test_set = OpenFaceDataset.load_dataset(settings.validation_filename)
     test_set.compute_statistics()
     print("Done BOA statistics.")
 

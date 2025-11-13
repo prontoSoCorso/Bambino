@@ -16,7 +16,8 @@ while not os.path.basename(parent_dir) == "Bambino":
     parent_dir = os.path.dirname(parent_dir)
 sys.path.append(parent_dir)
 
-from config import Config_03_train as conf, utils
+import _03_train.ROCKET.config_rocket as conf
+from config import settings
 from DataUtils.BoaOpenFaceDataset import BoaOpenFaceDataset
 from _utils_ import models_utils, dataset_utils, plot_utils
 
@@ -25,7 +26,7 @@ def classification_model(head_type="RF"):
     if head_type.upper() == "RF":
         return RandomForestClassifier(
             n_estimators=conf.rf_n_estimators,
-            random_state=utils.seed,
+            random_state=settings.seed,
             max_depth=conf.rf_max_depth,
             min_samples_split=conf.rf_min_split,
             max_features=conf.rf_max_features,
@@ -35,7 +36,7 @@ def classification_model(head_type="RF"):
     elif head_type.upper() == "LR":
         return LogisticRegression(
             max_iter=conf.lr_max_iter,
-            random_state=utils.seed,
+            random_state=settings.seed,
             solver=conf.solver,
             penalty=conf.penalty,
             l1_ratio=conf.lr_l1_ratio,
@@ -43,7 +44,7 @@ def classification_model(head_type="RF"):
         )
     elif head_type.upper() == "XGB":
         return XGBClassifier(
-            random_state=utils.seed,
+            random_state=settings.seed,
             use_label_encoder=False,
             eval_metric='logloss'
         )
@@ -78,9 +79,9 @@ def main(do_analysis=False, dataset_type="raw"):
     print("\n📂 Loading datasets...")
     selected_modalities = list(conf.modality_dims.keys())
     datasets = {}
-    for split, path in [("train", utils.get_dataset_path(dataset_type, utils.train_filename)),
-                        ("val",   utils.get_dataset_path(dataset_type, utils.validation_filename)),
-                        ("test",  utils.get_dataset_path(dataset_type, utils.test_filename))]:
+    for split, path in [("train", settings.get_dataset_path(dataset_type, settings.train_filename)),
+                        ("val",   settings.get_dataset_path(dataset_type, settings.validation_filename)),
+                        ("test",  settings.get_dataset_path(dataset_type, settings.test_filename))]:
         print(f"Loading {split} set from {path}")
         datasets[split] = BoaOpenFaceDataset.load_dataset(path, modalities=selected_modalities)
     train_ds = datasets["train"]
@@ -149,7 +150,7 @@ def main(do_analysis=False, dataset_type="raw"):
     # ─── ROCKET transform ─────────────────────────────────────────────
     print("\n🔄 Fitting and transforming features with ROCKET...")
     rocket = Rocket(num_kernels=conf.rocket_kernels,
-                    random_state=utils.seed,
+                    random_state=settings.seed,
                     n_jobs=-1)
     X_train_feat = rocket.fit_transform(X_train)
     X_val_feat   = rocket.transform(X_val)
