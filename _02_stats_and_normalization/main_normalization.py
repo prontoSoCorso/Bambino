@@ -63,6 +63,6 @@ if __name__ == "__main__":
     # Configurazione preprocess
     cfg = Config_02_normalization
 
-    for split in ["train", "validation", "test"]:
+    for split in ["training", "validation", "test"]:
         normalize_dataset(split, cfg)
 

@@ -8,3 +8,17 @@ Networks/.ipynb_checkpoints/
 Networks/__pycache__/
 TrainUtils/.ipynb_checkpoints/
 TrainUtils/__pycache__/
+
+# Ignore Jupyter Notebook checkpoint files
+*.ipynb_checkpoints
+
+# Models
+*.h5
+*.ckpt
+*.pt
+*.pth
+*.joblib
+
+# Datasets
+*.csv
+*.tsv

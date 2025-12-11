@@ -76,7 +76,7 @@ def lstmfcn_main(train_path="", val_path="", test_path="", default_path=True, da
     datasets = {}
     selected_modalities = list(conf.modality_dims.keys())
     if default_path:
-        for split, path in [("train", settings.get_dataset_path(dataset_type, settings.train_filename)),
+        for split, path in [("train", settings.get_dataset_path(dataset_type, settings.training_filename)),
                             ("val",   settings.get_dataset_path(dataset_type, settings.validation_filename)),
                             ("test",  settings.get_dataset_path(dataset_type, settings.test_filename))]:
             print(f"Loading {split} set from {path} with modalities {selected_modalities}")

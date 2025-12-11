@@ -106,7 +106,7 @@ def main(dataset_type):
 
     datasets = {}
     modalities = list(conf.modality_dims.keys())
-    for split, path in [("train", settings.get_dataset_path(dataset_type, settings.train_filename)),
+    for split, path in [("train", settings.get_dataset_path(dataset_type, settings.training_filename)),
                         ("val",   settings.get_dataset_path(dataset_type, settings.validation_filename)),
                         ("test",  settings.get_dataset_path(dataset_type, settings.test_filename))]:
         datasets[split] = BoaOpenFaceDataset.load_dataset(path, modalities=modalities)

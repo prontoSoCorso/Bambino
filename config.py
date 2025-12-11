@@ -15,7 +15,9 @@ while os.path.basename(PROJECT_ROOT) != "Bambino":
 DATASET_SUBDIRS = {
     'raw': 'raw',
     'preprocessed': 'preprocessed',
-    'normalized': 'normalized'
+    'normalized': 'normalized',
+    'augmented': 'augmented',
+    'augmented_normalized': 'augmented_normalized'
 }
 
 class settings:
@@ -40,7 +42,7 @@ class settings:
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
 
-    train_filename      = "training_set.pt"
+    training_filename   = "training_set.pt"
     validation_filename = "validation_set.pt"
     test_filename       = "test_set.pt"
 
@@ -80,6 +82,6 @@ class settings:
 
     
 class Config_02_normalization:
-    input_dataset_type = "preprocessed"
-    output_dataset_type = "normalized"
+    input_dataset_type = "augmented"
+    output_dataset_type = "augmented_normalized"
 
