@@ -1,5 +1,4 @@
 1. Baseline: raw features + logistic regression (per-trial means, stds over time).
-    Specifically, 7 time series descriptors ()
 
 2. MiniROCKET → LightGBM/Random forest (+ metadata)
 
@@ -9,3 +8,31 @@
 4. Custom LSTMFCN
 
 5. ResNet considering all the signals like an image
+
+
+
+Go deeper into point 1.
+Mean (Average level)
+
+Std Dev (Variance/Energy)
+
+Max (Peak amplitude)
+
+Min (Trough amplitude)
+
+Skewness (Is the signal lopsided?)
+
+Kurtosis (How "spiky" or impulsive is it?)
+
+Zero-Crossing Rate (How fast does it oscillate?)
+
+(Optional) Peak-to-Peak Distance (or Number of Peaks)
+
+
+OR 
+
+Search the mail with some better descriptor (newsletter of ??)
+
+OR
+
+"Catch22" (Lubba et al., 2019): A famous recent paper that reduced thousands of features down to the useful ones.
