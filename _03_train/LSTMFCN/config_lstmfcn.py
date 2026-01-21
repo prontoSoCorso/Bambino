@@ -1,13 +1,11 @@
 # Configuration file for LSTM-FCN model
-
-
 import os
 
 class lstmfcn_config:
     current_dir = os.path.dirname(os.path.abspath(__file__))
     output_model_base_dir = os.path.join("_04_test", "best_models")
     output_dir_results = os.path.join(current_dir, "results_lstmfcn")
-    dataset_type = "normalized"        # raw, preprocessed, normalized
+    dataset_type = "augmented_normalized"        # raw, preprocessed, normalized
     save_plots = True
     modality_dims = {
         "g": 8,
@@ -26,11 +24,11 @@ class lstmfcn_config:
     # Training
     lstmfcn_num_epochs      = 100
     lstmfcn_batch_size      = 16
-    lstmfcn_learning_rate   = 3e-6
+    lstmfcn_learning_rate   = 1e-4
     lstmfcn_use_focal       = True
 
     # Early stopping
-    lstmfcn_early_stopping_patience = lstmfcn_num_epochs
+    lstmfcn_early_stopping_patience = 30
 
     # Scheduler: OneCycleLR
     lstmfcn_pct_start       = 0.15
@@ -39,19 +37,19 @@ class lstmfcn_config:
 
     # Model
     enc_hidden_dim      = 64
-    dropout_enc         = 0.2
+    dropout_enc         = 0.4
     n_heads             = 4
-    dropout_attn        = 0.15
+    dropout_attn        = 0.4
 
     lstm_hidden_dim     = 64
-    lstm_layers         = 1
+    lstm_layers         = 2
     bidirectional       = True
-    dropout_lstm        = 0.3
+    dropout_lstm        = 0.4
 
     cnn_kernel_sizes    = "5,7,9"
     cnn_filter_sizes    = "128,128,128"
-    dropout_cnn         = 0.1
-    se_ratio            = 0.3
+    dropout_cnn         = 0.4
+    se_ratio            = 0.4
 
     dropout_classifier  = 0.4
 

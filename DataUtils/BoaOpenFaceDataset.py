@@ -34,12 +34,15 @@ class BoaOpenFaceDataset(OpenFaceDataset):
         # override BOA‐specific age groups for stats()
         self.AGE_GROUPS = BoaOpenFaceDataset.AGE_GROUPS_BOA
 
-        # set audio labels
+        # FIXED: Enforce a global audio order if provided
         if audio_groups is not None:
             self.audio_groups = list(audio_groups)
         else:
-            # np.unique returns ndarray, so wrap in list()
-            self.audio_groups = list(np.unique([inst.audio for inst in self.instances]))
+            # Fallback only if no global list provided (risky for consistency)
+            self.audio_groups = sorted(list(np.unique([inst.audio for inst in self.instances])))
+        
+        # Pre-compute dictionary for O(1) lookup (Solves Point 5 partially)
+        self.audio_to_idx = {audio: idx for idx, audio in enumerate(self.audio_groups)}
 
 
     def __getitem__(self, idx):
@@ -48,23 +51,28 @@ class BoaOpenFaceDataset(OpenFaceDataset):
 
         inst        = self.instances[idx]
         sex_t       = OpenFaceDataset._to_label_tensor(inst.sex)
-        audio_idx   = list(self.audio_groups).index(inst.audio)
+        audio_idx   = self.audio_to_idx[inst.audio]
         audio_t     = OpenFaceDataset._to_label_tensor(audio_idx)
         spk         = inst.speaker if inst.speaker is not None else -1
         speaker_t   = OpenFaceDataset._to_label_tensor(spk)
 
         return x, y, [age_t, trial_t, trial_id_t, sex_t, audio_t, speaker_t]
     
+    @staticmethod
     def load_dataset(path: str, audio_groups: list = None, modalities: list = None):
         """
         Load a pickled BoaOpenFaceDataset and restore new attributes.
         """
         ds = OpenFaceDataset.load_dataset(path, modalities=modalities)
+        
         # restore audio_groups if provided
         if audio_groups is not None:
             ds.audio_groups = list(audio_groups)
         else:
-            ds.audio_groups = list(np.unique([inst.audio for inst in ds.instances]))
+            ds.audio_groups = sorted(list(np.unique([inst.audio for inst in ds.instances])))
+        
+        # Pre-compute dictionary for O(1) lookup (Solves Point 5 partially)
+        ds.audio_to_idx = {audio: idx for idx, audio in enumerate(ds.audio_groups)}
         return ds
         
     def compute_statistics(self, recalc_stats: bool = False):
