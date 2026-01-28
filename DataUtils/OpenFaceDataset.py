@@ -91,7 +91,11 @@ class OpenFaceDataset(Dataset):
             "h": torch.tensor(inst.head_info, dtype=torch.float),
             "f": torch.tensor(inst.face_info, dtype=torch.float),
         }
-        x = {k: full_x[k] for k in self.modalities}
+        # maybe "self.modealities" does not exist. In that situation, return full_x
+        if hasattr(self, "modalities"):
+            x = {k: full_x[k] for k in self.modalities}
+        else:
+            x = full_x
         y = OpenFaceDataset._to_label_tensor(inst.trial_type)
 
         # extra metadata

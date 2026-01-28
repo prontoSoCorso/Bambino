@@ -1,0 +1,94 @@
+        Model,                  Role,               Type,                   Head
+1. Logistic Regression,     Baseline,           Statistical/ML,             Logistic (L1 Lasso)
+2. MiniRocket,              Speed/SOTA,         Transform/ML,               XGBoost
+3. FiLM-CNN,                Context,            Deep Learning,              MLP (End-to-End)
+4. InceptionTime,           Deep SOTA,          Deep Learning,              MLP (End-to-End)
+5. ResNet-18 (GAF),         Vision,             Deep/Transfer Learning,     MLP (Fine-tune)
+6. MOMENT,                  Foundation,         Transfer Learning,          XGBoost
+
+
+
+1. Baseline: Logistic Regression (Feature Engineering)
+
+2. SOTA Traditional: MiniRocket + XGBoost (with Metadata). MiniRocket>ROCKET --> 
+            It is deterministic (no random kernels varying between runs), significantly faster, and achieves almost identical accuracy to ROCKET.
+
+3. Context-Aware Deep: FiLM-CNN (1D ResNet with FiLM layers).
+    It explicitly models the hypothesis: 
+        "The brain/movement patterns of a 3-month-old are fundamentally different from a 7-month-old." It's a "Context-Aware" CNN.
+
+4. SOTA Deep: InceptionTime or LSTMFCN custom
+
+5. Experimental Vision: ResNet-18 (on GAF Images)
+
+6. SOTA foundation:  MOMENT + XGBoost.
+
+
+
+
+Logistic regression specs:
+
+1. Statistical Features
+
+These capture the "shape" and distribution of the baby's movements (e.g., how much they move, in which direction).
+
+    Mean (_mean): The average value of the signal.
+
+        Utility: Tells you the "bias" of the movement (e.g., does the baby tend to keep their head rotated to the left on average?).
+
+    Standard Deviation (_std): The spread of the signal.
+
+        Utility: A direct proxy for stability vs. agitation. A high std in head rotation means the baby is moving their head a lot; low std means they are still.
+
+    Min / Max / Peak-to-Peak (_min, _max, _peak2peak): The extreme values and the total range.
+
+        Utility: Measures the magnitude of the strongest reaction (e.g., the widest smile or the furthest head turn).
+
+    Percentiles (25th, 50th, 75th) (_p25, _p50, _p75): The values below which a percentage of observations fall.
+
+        Utility: robust descriptors of the distribution that are less sensitive to outliers than mean/min/max.
+
+    Skewness (_skew): The asymmetry of the distribution.
+
+        Utility: Detects directional bias. For example, if the baby quickly looks left and slowly returns, the signal will be skewed.
+
+    Kurtosis (_kurtosis): The "tailedness" of the distribution.
+
+        Utility: Distinguishes between sudden jerks (high kurtosis, many outliers) and constant, smooth movement (low kurtosis).
+
+2. Temporal / Dynamics Features
+
+These capture how the movement evolves over time (e.g., speed, rhythm, trends).
+
+    Autocorrelation (Lag 1 & 5) (_auto_lag1, _auto_lag5): How correlated the signal is with a delayed version of itself.
+
+        Utility: Measures smoothness and predictability. High autocorrelation means the baby moves slowly and deliberately; low autocorrelation implies jittery or erratic motion.
+
+    Mean Crossing Rate (_mean_cross): How often the signal crosses its own average.
+
+        Utility: A proxy for frequency. A high crossing rate indicates rapid oscillation (shaking), while a low rate indicates a steady pose.
+
+    Zero Crossing Rate (_zero_cross): How often the signal crosses the value 0.
+
+        Utility: Similar to mean crossing, but specific to the absolute zero baseline (useful for normalized signals like Gaze coordinates).
+
+    Slope (_slope): The angle of a linear regression line fitted to the signal.
+
+        Utility: Captures long-term trends. (e.g., Is the baby slowly turning their head away from the stimulus throughout the entire trial?).
+
+    Absolute Energy (_abs_energy): The sum of squared values.
+
+        Utility: Measures the total intensity or "power" of the movement sequence.
+
+3. Complexity Features
+
+These capture the "texture" of the signal.
+
+    CID_CE (Complexity-Invariant Distance Complexity Estimate) (_cid_ce): Calculated as ∑(xi​−xi−1​)2​.
+
+        Utility: Measures the "jaggedness" or total length of the signal path. A baby who is trembling or making micro-expressions will have a higher complexity score than one making a single smooth movement, even if the range (min/max) is the same.
+
+
+
+
+

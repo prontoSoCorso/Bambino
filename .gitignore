@@ -22,3 +22,6 @@ TrainUtils/__pycache__/
 # Datasets
 *.csv
 *.tsv
+
+# images created for resnet
+images/
