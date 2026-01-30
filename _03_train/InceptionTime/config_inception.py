@@ -1,13 +1,13 @@
 import torch
 
 # Configuration for InceptionTime + Metadata
-dataset_type = 'augmented_normalized'
+dataset_type = 'augmented_normalized' # 'normalized' or 'augmented_normalized'
 
 # Model Config
 TARGET_LEN = 250          
 BATCH_SIZE = 16
 NUM_EPOCHS = 50      
-PATIENCE = 20            
+PATIENCE = 10            
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 PRINT_EVERY = 1
 
@@ -28,4 +28,4 @@ dropout = 0.6
 
 # Training Config
 LR = 1e-3
-WEIGHT_DECAY = 0.001
+WEIGHT_DECAY = 0.01

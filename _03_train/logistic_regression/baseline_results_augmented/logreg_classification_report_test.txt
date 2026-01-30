@@ -1,0 +1,11 @@
+Best C: 2.782559402207126
+Best Threshold: 0.77
+
+              precision    recall  f1-score   support
+
+           0     0.2745    0.5185    0.3590        27
+           1     0.8488    0.6636    0.7449       110
+
+    accuracy                         0.6350       137
+   macro avg     0.5617    0.5911    0.5519       137
+weighted avg     0.7356    0.6350    0.6688       137

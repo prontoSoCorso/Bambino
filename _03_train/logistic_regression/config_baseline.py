@@ -1,2 +1,0 @@
-# Configuration for baseline logistic regression model
-dataset_type = 'augmented_normalized'

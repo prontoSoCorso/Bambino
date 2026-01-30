@@ -21,7 +21,7 @@
 
 5. Experimental Vision: ResNet-18 (on GAF Images)
 
-6. SOTA foundation:  MOMENT + XGBoost.
+6. SOTA foundation:  MOMENT + XGBoost(?).
 
 
 

@@ -26,7 +26,10 @@ from DataUtils.BoaOpenFaceDataset import BoaOpenFaceDataset
 
 # --- Config ---
 current_file_dir = os.path.basename(os.path.dirname(os.path.abspath(__file__)))
-OUTPUT_BASE_DIR = os.path.join(PROJECT_ROOT, "_03_train", current_file_dir ,"resnet_dataset_multimodal")
+DATASET_TYPE = 'normalized' # 'augmented_normalized' or 'normalized'
+OUTPUT_BASE_DIR = os.path.join(PROJECT_ROOT, "_03_train", current_file_dir ,f"resnet_dataset_{DATASET_TYPE}")
+
+os.makedirs(OUTPUT_BASE_DIR, exist_ok=True)
 IMAGE_SIZE = 224
 
 def compute_gasf(X):
@@ -145,13 +148,11 @@ def process_split(dataset, split_name, pcas=None):
         
     return pcas, metadata_records
 
-if __name__ == "__main__":
-    D_TYPE = 'augmented_normalized'
-    
+if __name__ == "__main__":    
     print("Loading Datasets...")
-    train_ds = BoaOpenFaceDataset.load_dataset(settings.get_dataset_path(D_TYPE, settings.training_filename))
-    val_ds = BoaOpenFaceDataset.load_dataset(settings.get_dataset_path(D_TYPE, settings.validation_filename))
-    test_ds = BoaOpenFaceDataset.load_dataset(settings.get_dataset_path(D_TYPE, settings.test_filename))
+    train_ds = BoaOpenFaceDataset.load_dataset(settings.get_dataset_path(DATASET_TYPE, settings.training_filename))
+    val_ds = BoaOpenFaceDataset.load_dataset(settings.get_dataset_path(DATASET_TYPE, settings.validation_filename))
+    test_ds = BoaOpenFaceDataset.load_dataset(settings.get_dataset_path(DATASET_TYPE, settings.test_filename))
     
     # =========================================================================
     # CRITICAL FIX: Manually inject stats into ALL datasets to prevent crash
