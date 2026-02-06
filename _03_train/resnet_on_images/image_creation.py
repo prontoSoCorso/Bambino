@@ -35,7 +35,7 @@ IMAGE_SIZE = 224
 def compute_gasf(X):
     """Compute Gramian Angular Summation Field."""
     # Clip to safety range [-1, 1]
-    X_clipped = np.clip(X, -1, 1) 
+    X_clipped = np.clip(X, -1, 1)
     Sin_phi = np.sqrt(1 - X_clipped**2)
     # GASF Formula
     GASF = np.outer(X_clipped, X_clipped) - np.outer(Sin_phi, Sin_phi)
