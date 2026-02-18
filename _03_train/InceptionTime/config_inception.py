@@ -1,7 +1,7 @@
 import torch
 
 # Configuration for InceptionTime + Metadata
-dataset_type = 'augmented_normalized' # 'normalized' or 'augmented_normalized'
+dataset_type = 'normalized' # 'normalized' or 'augmented_normalized'
 
 # Model Config
 TARGET_LEN = 250          

@@ -1,7 +1,7 @@
 import torch
 
 # Dataset Config
-dataset_type = 'normalized' # "normalized", "augmented_normalized"
+dataset_type = 'augmented_normalized' # "normalized", "augmented_normalized"
 training_filename = "train_data.pkl"
 validation_filename = "val_data.pkl"
 test_filename = "test_data.pkl"

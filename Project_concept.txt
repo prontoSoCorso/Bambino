@@ -1,10 +1,10 @@
         Model,                  Role,               Type,                   Head
 1. Logistic Regression,     Baseline,           Statistical/ML,             Logistic (L1 Lasso)
-2. MiniRocket,              Speed/SOTA,         Transform/ML,               XGBoost
+2. MiniRocket,              Speed/SOTA,         Transform/ML,               HistGBoost
 3. FiLM-CNN,                Context,            Deep Learning,              MLP (End-to-End)
 4. InceptionTime,           Deep SOTA,          Deep Learning,              MLP (End-to-End)
 5. ResNet-18 (GAF),         Vision,             Deep/Transfer Learning,     MLP (Fine-tune)
-6. MOMENT,                  Foundation,         Transfer Learning,          XGBoost
+6. MOMENT,                  SOTA Foundation,    Transfer Learning,          HistGBoost, logreg, mlp, pca+tabpfn, tabpfn 
 
 
 
@@ -92,3 +92,85 @@ These capture the "texture" of the signal.
 
 
 
+
+
+
+
+Project description:
+Time-series dataset of infant facial-feature signals (OpenFace) recorded at 25 Hz. Each trial is 10 s (250 timesteps) × 38 channels; 
+~600 training trials, ~170 validation, ~170 test. 
+Eventual augmentation on the train set. Binary classification (class 0 ≈ minority ≈ ~20% of trials, class 1 ≈ majority ≈ ~80%). 
+Two categorical per-trial covariates: age and sex. 
+Each infant contributes ≈20 trials; 
+an acoustic stimulus is present (labelled “stimulus”) or withheld (control) to simulate hearing vs. deafness.
+
+
+Models used:
+
+        Model,                  Role,               Type,                   Head
+1. Logistic Regression,     Baseline,           Statistical/ML,             Logistic (L1 Lasso)
+2. MiniRocket,              Speed/SOTA,         Transform/ML,               HistGBoost
+3. FiLM-CNN,                Context,            Deep Learning,              MLP (End-to-End)
+4. InceptionTime,           Deep SOTA,          Deep Learning,              MLP (End-to-End)
+5. ResNet-18 (GAF),         Vision,             Deep/Transfer Learning,     MLP (Fine-tune)
+6. MOMENT,                  SOTA Foundation,    Transfer Learning,          HistGBoost, logreg, mlp, pca+tabpfn, tabpfn 
+
+
+More details:
+1. Splitting was done correctly. No data leakage. Each infant has all his trials in only one subset
+2. Class imbalanced was handled in 2 ways and tested for both (each model trained on augmented data or original data): (1) through data augmentation on train (2) weighted loss
+3. Simpler models matched deep learning models. However, both has bal_acc on test from 0.5 to 0.57 (more or less)
+4. What metrics should I use? I'm using balanced accuracy and F1 score
+5. What do you mean for "What's the inter-rater reliability of your labels?". Labels are certain because we know if we gave the stimulus or not. All infants hear.
+
+
+More details:
+1. I already evaluate per-baby bal_acc but I don't see particular insights. Should I do a statistical test? How?
+2. I plotted the UMAP, based on all channels and also on all possible combinations of modalities (e.g. only gaze, only head, only face, face+head, face+gaze, etc.). No possible visual distinction between labels
+3. Age stats: Ages: count=896, missing=0   mean=5.42, std=1.08, min=3.45, 5%=3.68, median=5.42, 95%=6.93, max=7.49
+4. Different types of acoustic stimulus, from music to mother's voice. Not usable because equal to the label (if control --> audio_type=None). 2 sec before the trial (so, at -2seconds start the trial, till 10 seconds. They cut the first 2 seconds with the stimulus). 2 different speakers.
+5. one session per infant, 1 control every 4 stimuli, same day
+6. Humans struggle in distinguishing stimulus vs no-stimulus
+7. Clinical motivation is to have an early detection of deafness in infant, to start the treatment earlier
+8. Number of unique subjects (pt_id): 46 Unique subjects per sex (by pt_id):   M: 17   F: 29
+9. Number of unique instances in the whole dataset = 896
+
+
+
+MUST DO:
+1. Formal human performance study (3-5 raters, 100 trials)
+    This is your paper's linchpin
+    Proves task ambiguity is objective
+
+2. Run the statistical analyses
+    Per-infant binomial test
+    Age/sex effect
+    Feature-level signal detection
+
+3. 5 key figures
+    Your UMAP
+    Model comparison bar chart
+    Per-infant accuracy histogram
+    Human vs. machine comparison
+    Feature effect sizes
+
+4. Temporal window analysis (0-2s, 2-4s, etc.)
+
+
+FOR AIME
+✅ 6 models comprehensively evaluated
+✅ Null results (bal_acc 0.50-0.57)
+✅ UMAP showing no separation
+✅ Age scatter plots (qualitative)
+✅ Anecdotal evidence: clinicians struggled
+✅ Clinical motivation (deafness screening)
+✅ Proper methodology (no data leakage, class balance)
+
+
+FOR JOURNAL
+❌ Formal human performance study
+❌ Sex analysis (insufficient data)
+❌ Quantitative age tests (qualitative is fine)
+❌ Per-infant statistical tests (nice-to-have)
+❌ Temporal window analysis
+❌ Anomaly detection

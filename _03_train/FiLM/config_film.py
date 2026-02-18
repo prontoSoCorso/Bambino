@@ -1,7 +1,7 @@
 import torch
 
 # Configuration for conv film + metadata
-dataset_type = 'augmented_normalized'
+dataset_type = 'normalized'   # "normalized", "augmented_normalized"
 
 # model config
 TARGET_LEN = 250          # target temporal length (pad/truncate to this)
