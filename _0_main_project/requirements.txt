@@ -1,0 +1,30 @@
+# BAMBINO _0_main_project — production environment.
+# Pinned to compatible majors/minors; CUDA 12.x assumed (matching legacy repo).
+
+# Core
+numpy>=1.26,<2.0
+scipy>=1.11,<2.0
+pandas>=2.0,<3.0
+
+# Deep learning
+torch>=2.2,<3.0
+pytorch-lightning>=2.2,<3.0
+tensorboard>=2.15
+
+# Classical ML
+scikit-learn>=1.4,<2.0
+
+# Optional: gradient boosting + foundation models
+xgboost>=2.0
+# momentfm  # MOMENT foundation model — install separately when MOMENT path is exercised
+# tabpfn    # zero-shot tabular classifier — install separately when TabPFN heads are exercised
+
+# Time-series transforms (MiniRocket lives in sktime/aeon)
+sktime>=0.27,<1.0
+
+# Visualization
+matplotlib>=3.7,<4.0
+
+# Testing
+pytest>=8.0
+pytest-xdist>=3.0
